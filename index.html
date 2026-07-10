@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rolex 3135 · Сборка</title>
+<style>
+  :root{
+    --bg:#e9ebee; --surface:#f6f7f8; --panel:#ffffff;
+    --ink:#191c20; --ink2:#586069; --ink3:#8a929b;
+    --line:#d4d9de; --line2:#e5e9ed;
+    --ruby:#a8323f; --ruby-soft:#f4e2e4; --brass:#9a7b3f;
+    --mono:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--sans);color:var(--ink);background:var(--bg);
+    -webkit-font-smoothing:antialiased;line-height:1.45;
+  }
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:20;background:var(--panel);
+    border-bottom:1px solid var(--line);
+    box-shadow:0 1px 0 #fff inset, 0 2px 6px rgba(20,25,30,.04);
+  }
+  .hbar{
+    display:flex;align-items:center;gap:14px;
+    max-width:1240px;margin:0 auto;padding:12px 20px;
+  }
+  .brand{display:flex;flex-direction:column;line-height:1.1}
+  .brand .k{
+    font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ruby);font-weight:600;
+  }
+  .brand .t{font-size:17px;font-weight:650;letter-spacing:-.01em}
+  .hcount{
+    margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--ink2);
+    border:1px solid var(--line);border-radius:100px;padding:5px 12px;background:var(--surface);
+    white-space:nowrap;
+  }
+  .hcount b{color:var(--ink);font-weight:650}
+  header::after{content:"";display:block;height:2px;background:linear-gradient(90deg,var(--ruby) 0 34%,transparent 34%)}
+
+  /* ---------- layout ---------- */
+  .wrap{max-width:1240px;margin:0 auto;padding:20px;display:grid;
+    grid-template-columns:250px minmax(0,1fr) 320px;gap:20px;align-items:start}
+
+  /* ---------- assembly spine ---------- */
+  .spine{position:sticky;top:78px}
+  .spine .cap{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink3);padding:0 4px 10px}
+  .node{
+    display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:10px;
+    width:100%;text-align:left;background:none;border:0;cursor:pointer;
+    padding:9px 10px;border-radius:8px;color:var(--ink);font-family:var(--sans);
+    position:relative;
+  }
+  .node + .node{margin-top:1px}
+  .node .num{
+    font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink3);
+    width:26px;height:26px;display:grid;place-items:center;
+    border:1px solid var(--line);border-radius:50%;background:var(--panel);
+  }
+  .node .lbl{font-size:13.5px;font-weight:500;letter-spacing:-.005em}
+  .node .cnt{font-family:var(--mono);font-size:11px;color:var(--ink3)}
+  .node:hover{background:var(--surface)}
+  .node.empty{color:var(--ink3);cursor:default}
+  .node.empty:hover{background:none}
+  .node.active{background:var(--panel);box-shadow:0 0 0 1px var(--line),0 4px 14px rgba(20,25,30,.06)}
+  .node.active .num{background:var(--ruby);border-color:var(--ruby);color:#fff}
+  .node.active .lbl{font-weight:650}
+  .node.active .cnt{color:var(--ruby)}
+  .node.done .num{border-color:var(--ruby);color:var(--ruby)}
+
+  /* ---------- stage (photo) ---------- */
+  .stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .stage .meta{padding:16px 18px 14px;border-bottom:1px solid var(--line2)}
+  .stage .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ruby);font-weight:600;margin-bottom:5px}
+  .stage h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
+  .photowrap{background:
+      radial-gradient(120% 120% at 50% 0,#fbfbfc 0,#eef0f2 100%);
+    display:grid;place-items:center;padding:18px}
+  .photowrap img.main{
+    max-width:100%;max-height:min(62vh,560px);border-radius:8px;cursor:zoom-in;
+    box-shadow:0 8px 30px rgba(20,25,30,.14);background:#fff}
+  .thumbs{display:flex;gap:8px;padding:0 18px 16px;flex-wrap:wrap}
+  .thumb{width:56px;height:56px;border-radius:7px;overflow:hidden;border:1px solid var(--line);
+    cursor:pointer;padding:0;background:#fff}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .thumb.sel{border-color:var(--ruby);box-shadow:0 0 0 2px var(--ruby-soft)}
+
+  /* ---------- parts panel ---------- */
+  .parts{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);position:sticky;top:78px}
+  .parts .head{padding:14px 16px 12px;border-bottom:1px solid var(--line2);display:flex;align-items:baseline;gap:8px}
+  .parts .head .h{font-size:13px;font-weight:650;letter-spacing:-.005em}
+  .parts .head .c{font-family:var(--mono);font-size:11px;color:var(--ink3);margin-left:auto}
+  .plist{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+  .part{display:grid;grid-template-columns:48px 1fr;gap:11px;align-items:center;
+    padding:9px 10px;border:1px solid var(--line2);border-radius:9px;background:var(--surface)}
+  .part .pic{width:48px;height:48px;border-radius:7px;overflow:hidden;border:1px solid var(--line);
+    background:#fff;display:grid;place-items:center;cursor:zoom-in}
+  .part .pic img{width:100%;height:100%;object-fit:cover}
+  .part .pic.none{font-family:var(--mono);font-size:9px;color:var(--ink3);cursor:default;text-align:center;line-height:1.2;padding:2px}
+  .part .body{min-width:0}
+  .part .ref{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--ink2);
+    background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-bottom:3px}
+  .part .qty{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--ruby);margin-left:5px}
+  .part .en{font-size:13px;line-height:1.25;color:var(--ink);font-weight:600;letter-spacing:-.005em}
+  .part .ru{display:block;font-size:12px;color:var(--ink2);margin-top:1px}
+  .note{margin:2px 12px 14px;font-size:12px;color:var(--ink2);border-left:2px solid var(--ruby);
+    padding:6px 10px;background:var(--ruby-soft);border-radius:0 6px 6px 0}
+  .empty-parts{padding:22px 14px;text-align:center;color:var(--ink3);font-size:13px}
+
+  /* ---------- footer nav ---------- */
+  .navbar{grid-column:2/4;display:flex;align-items:center;gap:12px;margin-top:2px}
+  .nbtn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:14px;font-weight:550;
+    color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:9px;
+    padding:11px 16px;cursor:pointer}
+  .nbtn:hover:not(:disabled){border-color:var(--ink3)}
+  .nbtn:disabled{opacity:.4;cursor:default}
+  .nbtn.prim{margin-left:auto;background:var(--ink);color:#fff;border-color:var(--ink)}
+  .nbtn.prim:hover:not(:disabled){background:#000}
+  .stepcount{font-family:var(--mono);font-size:12px;color:var(--ink2)}
+
+  /* ---------- lightbox ---------- */
+  .lb{position:fixed;inset:0;background:rgba(16,19,22,.86);display:none;place-items:center;z-index:80;padding:24px;cursor:zoom-out}
+  .lb.on{display:grid}
+  .lb img{max-width:96vw;max-height:92vh;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .wrap{grid-template-columns:1fr;gap:14px;padding:14px}
+    .spine{position:static;order:3}
+    .parts{position:static;order:2}
+    .stage{order:1}
+    .navbar{grid-column:1;order:0;position:sticky;top:70px;z-index:10;
+      background:var(--bg);padding:8px 0;margin:0 -14px 0;padding-left:14px;padding-right:14px}
+    .spine{border-top:1px solid var(--line);padding-top:14px}
+    .spine .nodes{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+    .photowrap img.main{max-height:52vh}
+  }
+  @media (max-width:520px){
+    .spine .nodes{grid-template-columns:1fr}
+    .hbar{padding:10px 14px}
+    .brand .t{font-size:15px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="hbar">
+    <div class="brand">
+      <span class="k">Rolex · Calibre 3135</span>
+      <span class="t">Тренажёр сборки</span>
+    </div>
+    <div class="hcount">Шаг <b id="hc-cur">1</b> / <span id="hc-tot">1</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- assembly spine -->
+  <nav class="spine">
+    <div class="cap">Ось сборки</div>
+    <div class="nodes" id="nodes"></div>
+  </nav>
+
+  <!-- stage -->
+  <section class="stage">
+    <div class="meta">
+      <div class="eyebrow" id="st-node">Узел</div>
+      <h1 id="st-title">—</h1>
+    </div>
+    <div class="photowrap"><img class="main" id="st-main" alt=""></div>
+    <div class="thumbs" id="st-thumbs"></div>
+  </section>
+
+  <!-- parts -->
+  <aside class="parts">
+    <div class="head"><span class="h">Детали на этом шаге</span><span class="c" id="pt-count"></span></div>
+    <div class="plist" id="pt-list"></div>
+    <div class="note" id="pt-note" style="display:none"></div>
+  </aside>
+
+  <!-- nav -->
+  <div class="navbar">
+    <button class="nbtn" id="prev">← Назад</button>
+    <span class="stepcount" id="scount"></span>
+    <button class="nbtn prim" id="next">Вперёд →</button>
+  </div>
+</div>
+
+<div class="lb" id="lb"><img id="lb-img" alt=""></div>
+
+<script>
+/* ====== assembly structure ====== */
+const NODES = [
+  {id:'plate',        n:'0', title:'Платина'},
+  {id:'train',        n:'1', title:'Колёсная система (ангренаж)'},
+  {id:'barrel',       n:'2', title:'Барабан + мост'},
+  {id:'windingBridge',n:'3', title:'Мост заводного механизма'},
+  {id:'pallet',       n:'4', title:'Анкерная вилка'},
+  {id:'balance',      n:'5', title:'Баланс'},
+  {id:'keyless',      n:'6', title:'Ремонтуар / заводной механизм'},
+  {id:'calendar',     n:'7', title:'Календарь'},
+  {id:'auto',         n:'8', title:'Автоподзавод'},
+];
+
+/* base64 images */
+const IMG1 = "img/steps/IMG1.jpg";
+
+const IMG2 = "img/steps/IMG2.jpg";
+
+const IMG3 = "img/steps/IMG3.jpg";
+
+const IMG4 = "img/steps/IMG4.jpg";
+
+const IMG5 = "img/steps/IMG5.jpg";
+
+const IMG6 = "img/steps/IMG6.jpg";
+
+const IMG7 = "img/steps/IMG7.jpg";
+
+const IMG8 = "img/steps/IMG8.jpg";
+
+const IMG9 = "img/steps/IMG9.jpg";
+
+const IMG10 = "img/steps/IMG10.jpg";
+
+const IMG11 = "img/steps/IMG11.jpg";
+
+const IMG12 = "img/steps/IMG12.jpg";
+
+const IMG13A = "img/steps/IMG13A.jpg";
+const IMG13B = "img/steps/IMG13B.jpg";
+
+const IMG14 = "img/steps/IMG14.jpg";
+
+const IMG15 = "img/steps/IMG15.jpg";
+
+const IMG16 = "img/steps/IMG16.jpg";
+
+const IMG17 = "img/steps/IMG17.jpg";
+
+const IMG18A = "img/steps/IMG18A.jpg";
+const IMG18B = "img/steps/IMG18B.jpg";
+const IMG18C = "img/steps/IMG18C.jpg";
+const IMG18D = "img/steps/IMG18D.jpg";
+
+const IMG19 = "img/steps/IMG19.jpg";
+
+const IMG20 = "img/steps/IMG20.jpg";
+
+const IMG21 = "img/steps/IMG21.jpg";
+
+const IMG22 = "img/steps/IMG22.jpg";
+
+const IMG23 = "img/steps/IMG23.jpg";
+
+const IMG24 = "img/steps/IMG24.jpg";
+
+const IMG25 = "img/steps/IMG25.jpg";
+
+const IMG26 = "img/steps/IMG26.jpg";
+
+const IMG27 = "img/steps/IMG27.jpg";
+
+const IMG28 = "img/steps/IMG28.jpg";
+
+const IMG29 = "img/steps/IMG29.jpg";
+
+const IMG30 = "img/steps/IMG30.jpg";
+
+const IMG31 = "img/steps/IMG31.jpg";
+
+const IMG32 = "img/steps/IMG32.jpg";
+
+const IMG33 = "img/steps/IMG33.jpg";
+
+const IMG34 = "img/steps/IMG34.jpg";
+
+const IMG35 = "img/steps/IMG35.jpg";
+
+const IMG36 = "img/steps/IMG36.jpg";
+
+const IMG37 = "img/steps/IMG37.jpg";
+
+const IMG38 = "img/steps/IMG38.jpg";
+
+const IMG39A = "img/steps/IMG39A.jpg";
+const IMG39B = "img/steps/IMG39B.jpg";
+const IMG39C = "img/steps/IMG39C.jpg";
+const IMG39D = "img/steps/IMG39D.jpg";
+const IMG39E = "img/steps/IMG39E.jpg";
+
+const IMG40 = "img/steps/IMG40.jpg";
+
+const PART_IMG = {"3135-100": "img/parts/3135-100.jpg", "3135-335": "img/parts/3135-335.jpg", "3135-125": "img/parts/3135-125.jpg", "3135-5115": "img/parts/3135-5115.jpg", "3135-330": "img/parts/3135-330.jpg", "3135-340": "img/parts/3135-340.jpg", "3135-360": "img/parts/3135-360.jpg", "3135-410": "img/parts/3135-410.jpg", "3135-110": "img/parts/3135-110.jpg", "3135-5110": "img/parts/3135-5110.jpg", "3135-310": "img/parts/3135-310.jpg", "3135-105": "img/parts/3135-105.jpg", "3135-305": "img/parts/3135-305.jpg", "3135-5210": "img/parts/3135-5210.jpg", "3135-212": "img/parts/3135-212.jpg", "3135-213": "img/parts/3135-213.jpg", "3135-217": "img/parts/3135-217.jpg", "3135-5213": "img/parts/3135-5213.jpg", "3135-245": "img/parts/3135-245.jpg", "3135-130": "img/parts/3135-130.jpg", "3135-211": "img/parts/3135-211.jpg", "3135-210": "img/parts/3135-210.jpg", "3135-421": "img/parts/3135-421.jpg", "3135-115": "img/parts/3135-115.jpg", "3135-432": "img/parts/3135-432.jpg", "3135-120": "img/parts/3135-120.jpg", "3135-307": "img/parts/3135-307.jpg", "3135-311": "img/parts/3135-311.jpg", "3135-270": "img/parts/3135-270.jpg", "3135-205": "img/parts/3135-205.jpg", "3135-204": "img/parts/3135-204.jpg", "3135-201": "img/parts/3135-201.jpg", "3135-240": "img/parts/3135-240.jpg", "3135-241": "img/parts/3135-241.jpg", "3135-266": "img/parts/3135-266.jpg", "3135-220": "img/parts/3135-220.jpg", "3135-225": "img/parts/3135-225.jpg", "3135-260": "img/parts/3135-260.jpg", "3135-250": "img/parts/3135-250.jpg", "3135-230": "img/parts/3135-230.jpg", "3135-268": "img/parts/3135-268.jpg", "3135-625": "img/parts/3135-625.jpg", "3135-635": "img/parts/3135-635.jpg", "3135-633": "img/parts/3135-633.jpg", "3135-9633": "img/parts/3135-9633.jpg", "3135-623": "img/parts/3135-623.jpg", "3135-5625": "img/parts/3135-5625.jpg", "3135-639": "img/parts/3135-639.jpg", "3135-645": "img/parts/3135-645.jpg", "3135-280": "img/parts/3135-280.jpg", "3135-670": "img/parts/3135-670.jpg", "3135-600": "img/parts/3135-600.jpg", "3135-16100": "img/parts/3135-16100.jpg", "3135-570": "img/parts/3135-570.jpg", "3135-568": "img/parts/3135-568.jpg", "3135-561": "img/parts/3135-561.jpg", "3135-560": "img/parts/3135-560.jpg", "3135-550": "img/parts/3135-550.jpg", "3135-540": "img/parts/3135-540.jpg", "3135-510": "img/parts/3135-510.jpg", "3135-140": "img/parts/3135-140.jpg", "3135-135": "img/parts/3135-135.jpg", "3135-560-1/-2/-3": "img/parts/3135-560-1_-2_-3.jpg"};
+
+/* steps — добавляем по мере поступления фото + списков */
+const STEPS = [
+  {
+    id:1, node:'plate',
+    title:'Платина в держателе механизма',
+    photos:[IMG1],
+    parts:[
+      {ref:'3135-100', en:'Main plate', ru:'Платина (основная пластина механизма)'},
+    ],
+    note:''
+  },
+  {
+    id:2, node:'plate',
+    title:'Фрикционное соединение (минутный триб)',
+    photos:[IMG2],
+    parts:[
+      {ref:'3135-335', en:'Minute pinion with cannon pinion', ru:'Фрикционное соединение (минутный триб с фрикционом)'},
+    ],
+    note:'Синим отмечено расположение детали на платине.'
+  },
+  {
+    id:3, node:'plate',
+    title:'Мост минутного триба',
+    photos:[IMG3],
+    parts:[
+      {ref:'3135-125', en:'Minute pinion bridge', ru:'Мост минутного триба'},
+      {ref:'3135-5115', en:'Screw', ru:'Винт', qty:2},
+    ],
+    note:'Синим отмечено расположение узла. Мост фиксируется двумя винтами 3135-5115.'
+  },
+  {
+    id:4, node:'train',
+    title:'Колёсная система (ангренаж)',
+    photos:[IMG4],
+    parts:[
+      {ref:'3135-330', en:'Great wheel', ru:'Центральное колесо'},
+      {ref:'3135-340', en:'Third wheel', ru:'Промежуточное (третье) колесо'},
+      {ref:'3135-360', en:'Second wheel', ru:'Секундное колесо'},
+      {ref:'3135-410', en:'Escape wheel', ru:'Анкерное колесо'},
+    ],
+    note:'Синим отмечен ангренаж. Установка колёс перед мостом колёсной системы.'
+  },
+  {
+    id:5, node:'train',
+    title:'Мост колёсной системы',
+    photos:[IMG5],
+    parts:[
+      {ref:'3135-110', en:'Train wheel bridge', ru:'Мост колёсной системы (ангренажа)'},
+      {ref:'3135-5110', en:'Screw', ru:'Винт', qty:3},
+    ],
+    note:'Синим отмечен мост колёсной системы. Фиксируется тремя винтами 3135-5110.'
+  },
+  {
+    id:18, node:'barrel',
+    title:'Сборка барабана (заводка пружины)',
+    photos:[IMG18A, IMG18B, IMG18C, IMG18D],
+    parts:[
+      {ref:'3135-310', en:'Barrel with arbor', ru:'Барабан с каре'},
+      {ref:'3135-307', en:'Barrel arbor', ru:'Барабанный вал (каре)'},
+      {ref:'3135-311', en:'Mainspring, standard strength', ru:'Заводная пружина (стандартная)'},
+    ],
+    note:'Кадры 1-4: детали барабана, заводка пружины 3135-311 в барабан и установка вала 3135-307 — до постановки барабана на платину.'
+  },
+  {
+    id:6, node:'barrel',
+    title:'Барабан',
+    photos:[IMG6],
+    parts:[
+      {ref:'3135-310', en:'Barrel with arbor', ru:'Барабан с каре'},
+    ],
+    note:'Синим отмечен барабан с заводной пружиной, установленный на платину.'
+  },
+  {
+    id:7, node:'barrel',
+    title:'Мост барабана',
+    photos:[IMG7],
+    parts:[
+      {ref:'3135-105', en:'Barrel bridge', ru:'Мост барабана'},
+      {ref:'3135-5110', en:'Screw', ru:'Винт', qty:2},
+    ],
+    note:'Синим отмечен мост барабана. Фиксируется двумя винтами 3135-5110.'
+  },
+  {
+    id:8, node:'barrel',
+    title:'Барабанное (храповое) колесо',
+    photos:[IMG8],
+    parts:[
+      {ref:'3135-305', en:'Ratchet wheel', ru:'Барабанное (храповое) колесо'},
+      {ref:'3135-5210', en:'Screw', ru:'Винт'},
+    ],
+    note:'Синим отмечено барабанное колесо на каре. Фиксируется винтом 3135-5210.'
+  },
+  {
+    id:9, node:'barrel',
+    title:'Сердечник промежуточного коронного колеса',
+    photos:[IMG9],
+    parts:[
+      {ref:'3135-212', en:'Core for intermediate crown wheel', ru:'Сердечник промежуточного коронного колеса'},
+    ],
+    note:'Синим отмечено место установки сердечника промежуточного коронного колеса.'
+  },
+  {
+    id:10, node:'barrel',
+    title:'Промежуточное коронное колесо',
+    photos:[IMG10],
+    parts:[
+      {ref:'3135-213', en:'Intermediate crown wheel', ru:'Промежуточное коронное колесо'},
+    ],
+    note:'Синим отмечено промежуточное коронное колесо, установленное на сердечник.'
+  },
+  {
+    id:11, node:'barrel',
+    title:'Переводной рычаг',
+    photos:[IMG11],
+    parts:[
+      {ref:'3135-217', en:'Yoke for sliding gear', ru:'Переводной рычаг'},
+      {ref:'3135-5213', en:'Screw for intermediate crown wheel', ru:'Винт промежуточного коронного колеса'},
+    ],
+    note:'Синим отмечена зона установки переводного рычага 3135-217 и винта 3135-5213 (винт промежуточного коронного колеса).'
+  },
+  {
+    id:12, node:'barrel',
+    title:'Пружина остановки баланса (стоп-секунда)',
+    photos:[IMG12],
+    parts:[
+      {ref:'3135-245', en:'Balance stop spring', ru:'Пружина остановки баланса (стоп-секунда)'},
+    ],
+    note:'Синим отмечена пружина остановки баланса (стоп-секунда) — золотистый рычажок у выреза выжимки.'
+  },
+  {
+    id:13, node:'windingBridge',
+    title:'Мост заводного механизма (в сборе)',
+    photos:[IMG13A, IMG13B],
+    parts:[
+      {ref:'3135-130', en:'Winding bridge', ru:'Мост заводного механизма'},
+      {ref:'3135-211', en:'Crown wheel core', ru:'Сердечник коронного колеса'},
+      {ref:'3135-210', en:'Crown wheel', ru:'Коронное колесо'},
+      {ref:'3135-5210', en:'Screw', ru:'Винт'},
+    ],
+    note:'Кадр 1 — детали узла, кадр 2 — собранный мост с коронным колесом. Коронное колесо фиксируется винтом 3135-5210.'
+  },
+  {
+    id:14, node:'windingBridge',
+    title:'Установка моста заводного механизма на платину',
+    photos:[IMG14],
+    parts:[
+      {ref:'3135-130', en:'Winding bridge', ru:'Мост заводного механизма'},
+    ],
+    note:'Синим отмечен собранный мост заводного механизма 3135-130, установленный на платину (видна маркировка 3135).'
+  },
+  {
+    id:15, node:'pallet',
+    title:'Анкерная вилка',
+    photos:[IMG15],
+    parts:[
+      {ref:'3135-421', en:'Pallet fork', ru:'Анкерная вилка'},
+    ],
+    note:'Синим отмечена анкерная вилка, установленная на платину.'
+  },
+  {
+    id:16, node:'pallet',
+    title:'Мост анкерной вилки',
+    photos:[IMG16],
+    parts:[
+      {ref:'3135-115', en:'Pallet bridge', ru:'Мост анкерной вилки'},
+      {ref:'3135-5115', en:'Screw', ru:'Винт', qty:2},
+    ],
+    note:'Синим отмечен мост анкерной вилки. Фиксируется двумя винтами 3135-5115.'
+  },
+  {
+    id:17, node:'balance',
+    title:'Баланс в сборе',
+    photos:[IMG17],
+    parts:[
+      {ref:'3135-432', en:'Balance with Breguet hairspring', ru:'Баланс с волоском (спираль Бреге), отрегулированный'},
+      {ref:'3135-120', en:'Balance bridge', ru:'Мост баланса'},
+      {ref:'3135-5110', en:'Screw', ru:'Винт', qty:2},
+    ],
+    note:'Синим отмечен баланс в сборе. 3135-432 (баланс с волоском) и 3135-120 (мост баланса) обычно идут одним узлом. Фиксируется двумя винтами 3135-5110.'
+  },
+  {
+    id:19, node:'keyless',
+    title:'Перевернуть платину (циферблатная сторона)',
+    photos:[IMG19],
+    parts:[],
+    note:'Действие: перевернуть механизм на циферблатную сторону для сборки заводного механизма и календаря.'
+  },
+  {
+    id:20, node:'keyless',
+    title:'Минутный триб',
+    photos:[IMG20],
+    parts:[
+      {ref:'3135-270', en:'Cannon pinion, h. 2.86 mm', ru:'Минутный триб (высота 2,86 мм)'},
+    ],
+    note:'Синим отмечен минутный триб 3135-270, установленный на центр со стороны циферблата.'
+  },
+  {
+    id:21, node:'keyless',
+    title:'Заводной триб и бочонок',
+    photos:[IMG21],
+    parts:[
+      {ref:'3135-205', en:'Sliding pinion', ru:'Бочонок'},
+      {ref:'3135-204', en:'Winding pinion', ru:'Заводной триб'},
+    ],
+    note:'Синим отмечены заводной триб 3135-204 и бочонок 3135-205 на заводном валу.'
+  },
+  {
+    id:22, node:'keyless',
+    title:'Заводной вал',
+    photos:[IMG22],
+    parts:[
+      {ref:'3135-201', en:'Winding stem', ru:'Заводной вал'},
+    ],
+    note:'Синим отмечен заводной вал 3135-201, вставленный в заводной механизм.'
+  },
+  {
+    id:23, node:'keyless',
+    title:'Переводной рычаг (бочонка)',
+    photos:[IMG23],
+    parts:[
+      {ref:'3135-240', en:'Yoke for sliding pinion', ru:'Переводной рычаг'},
+    ],
+    note:'Синим отмечен переводной рычаг 3135-240, управляющий бочонком.'
+  },
+  {
+    id:24, node:'keyless',
+    title:'Пружина переводного рычага',
+    photos:[IMG24],
+    parts:[
+      {ref:'3135-241', en:'Spring for yoke', ru:'Пружина переводного рычага'},
+    ],
+    note:'Синим отмечена пружина переводного рычага 3135-241.'
+  },
+  {
+    id:25, node:'keyless',
+    title:'Рычаг переводного колеса',
+    photos:[IMG25],
+    parts:[
+      {ref:'3135-266', en:'Yoke for setting wheel', ru:'Рычаг переводного колеса'},
+    ],
+    note:'Синим отмечен рычаг переводного колеса 3135-266.'
+  },
+  {
+    id:26, node:'keyless',
+    title:'Выжимка',
+    photos:[IMG26],
+    parts:[
+      {ref:'3135-220', en:'Setting lever', ru:'Выжимка'},
+    ],
+    note:'Синим отмечена выжимка 3135-220, фиксирующая заводной вал.'
+  },
+  {
+    id:27, node:'keyless',
+    title:'Пружина выжимки',
+    photos:[IMG27],
+    parts:[
+      {ref:'3135-225', en:'Spring for setting lever', ru:'Пружина выжимки'},
+      {ref:'3135-5115', en:'Screw', ru:'Винт'},
+    ],
+    note:'Синим отмечена пружина выжимки 3135-225, зафиксированная винтом 3135-5115.'
+  },
+  {
+    id:28, node:'keyless',
+    title:'Вексельное и переводные колёса',
+    photos:[IMG28],
+    parts:[
+      {ref:'3135-260', en:'Minute wheel', ru:'Вексельное колесо'},
+      {ref:'3135-250', en:'Setting wheel', ru:'Переводное колесо', qty:2},
+    ],
+    note:'Синим отмечены вексельное колесо 3135-260 и два переводных колеса 3135-250.'
+  },
+  {
+    id:29, node:'keyless',
+    title:'Фиксатор переводного рычага',
+    photos:[IMG29],
+    parts:[
+      {ref:'3135-230', en:'Jumper for setting lever', ru:'Фиксатор переводного рычага'},
+      {ref:'3135-5115', en:'Screw', ru:'Винт'},
+    ],
+    note:'Синим отмечен фиксатор переводного рычага 3135-230, зафиксированный винтом 3135-5115.'
+  },
+  {
+    id:30, node:'keyless',
+    title:'Крышка механизма',
+    photos:[IMG30],
+    parts:[
+      {ref:'3135-268', en:'Mechanism cover, mounted', ru:'Крышка механизма в сборе'},
+      {ref:'3135-5115', en:'Screw', ru:'Винт', qty:2},
+    ],
+    note:'Синим отмечена крышка механизма 3135-268, закрывающая заводной механизм. Фиксируется двумя винтами 3135-5115.'
+  },
+  {
+    id:31, node:'calendar',
+    title:'Колесо даты и рычаг календаря',
+    photos:[IMG31],
+    parts:[
+      {ref:'3135-625', en:'Date wheel, mounted', ru:'Колесо даты в сборе'},
+      {ref:'3135-635', en:'Spring for cam yoke', ru:'Пружина рычага календаря'},
+      {ref:'3135-633', en:'Yoke for cam', ru:'Рычаг календаря'},
+      {ref:'3135-9633', en:'Jewel for yoke for cam', ru:'Камень рычага календаря'},
+    ],
+    note:'Синим отмечены колесо даты 3135-625 с рычагом календаря 3135-633, его пружиной 3135-635 и камнем 3135-9633.'
+  },
+  {
+    id:32, node:'calendar',
+    title:'Палец переключения даты',
+    photos:[IMG32],
+    parts:[
+      {ref:'3135-623', en:'Date finger', ru:'Палец переключения даты'},
+      {ref:'3135-5625', en:'Screw for date wheel', ru:'Винт колеса даты'},
+    ],
+    note:'Синим отмечен палец переключения даты 3135-623, зафиксированный винтом 3135-5625.'
+  },
+  {
+    id:33, node:'calendar',
+    title:'Промежуточное колесо корректора даты',
+    photos:[IMG33],
+    parts:[
+      {ref:'3135-639', en:'Intermediate date corrector', ru:'Промежуточное колесо корректора даты'},
+    ],
+    note:'Синим отмечено промежуточное колесо корректора даты 3135-639.'
+  },
+  {
+    id:34, node:'calendar',
+    title:'Корректор даты',
+    photos:[IMG34],
+    parts:[
+      {ref:'3135-645', en:'Date corrector', ru:'Корректор даты'},
+    ],
+    note:'Синим отмечен корректор даты 3135-645 (зелёная звёздочка быстрой коррекции).'
+  },
+  {
+    id:35, node:'calendar',
+    title:'Часовое колесо',
+    photos:[IMG35],
+    parts:[
+      {ref:'3135-280', en:'Hour wheel', ru:'Часовое колесо'},
+    ],
+    note:'Синим отмечено часовое колесо 3135-280.'
+  },
+  {
+    id:36, node:'calendar',
+    title:'Промежуточное колесо даты',
+    photos:[IMG36],
+    parts:[
+      {ref:'3135-670', en:'Intermediate date wheel', ru:'Промежуточное колесо даты'},
+    ],
+    note:'Синим отмечено промежуточное колесо даты 3135-670.'
+  },
+  {
+    id:37, node:'calendar',
+    title:'Посадочное кольцо диска даты',
+    photos:[IMG37],
+    parts:[
+      {ref:'3135-600', en:'Date indicator seating', ru:'Посадочное кольцо диска даты'},
+    ],
+    note:'Синим отмечено посадочное кольцо диска даты 3135-600, закрывающее календарный механизм.'
+  },
+  {
+    id:38, node:'calendar',
+    title:'Диск даты',
+    photos:[IMG38],
+    parts:[
+      {ref:'3135-16100', en:'Date disc, champagne', ru:'Диск даты (шампань)'},
+    ],
+    note:'Синим отмечен диск даты 3135-16100 (шампань). Зафиксировать календарь защёлкой в районе 13–14 часов. Варианты цвета: 16100 шампань, 16200 серебро, 16500 розовый.'
+  },
+  {
+    id:39, node:'auto',
+    title:'Модуль автоподзавода (в сборе)',
+    photos:[IMG39A, IMG39B, IMG39C, IMG39D, IMG39E],
+    parts:[
+      {ref:'3135-570', en:'Oscillating weight', ru:'Ротор (сектор автоподзавода)'},
+      {ref:'3135-568', en:'Axle for oscillating weight', ru:'Ось ротора'},
+      {ref:'3135-561', en:'Bridle for spring-clip', ru:'Прижимная скоба фиксатора'},
+      {ref:'3135-560-1/-2/-3', en:'Пружинный фиксатор ротора', ru:'h 0,18 / 0,165 / 0,195 мм (по высоте)'},
+      {ref:'3135-550', en:'Pinion for oscillating weight', ru:'Триб ротора'},
+      {ref:'3135-540', en:'Reversing wheel, mounted', ru:'Реверсивное колесо в сборе', qty:2},
+      {ref:'3135-510', en:'Driving wheel for ratchet wheel', ru:'Ведущее колесо барабанного колеса'},
+      {ref:'3135-140', en:'Automatic device upper bridge', ru:'Верхний мост автоподзавода'},
+      {ref:'3135-135', en:'Automatic device lower bridge', ru:'Нижний мост автоподзавода'},
+      {ref:'3135-5110', en:'Screw', ru:'Винт', qty:3},
+    ],
+    note:'Кадры 1-5: сборка модуля автоподзавода — нижний/верхний мосты, реверсивные колёса, триб и ротор. Пружинная шайба 3135-560 подбирается по высоте (0,18 / 0,165 / 0,195 мм).'
+  },
+  {
+    id:40, node:'auto',
+    title:'Установка модуля автоподзавода на механизм',
+    photos:[IMG40],
+    parts:[
+      {ref:'3135-570', en:'Oscillating weight', ru:'Ротор (сектор автоподзавода)'},
+      {ref:'3135-5110', en:'Screw', ru:'Винт', qty:2},
+    ],
+    note:'Синим отмечен собранный модуль автоподзавода, установленный на механизм. Крепится двумя винтами 3135-5110. Сборка калибра 3135 завершена.'
+  },
+];
+
+/* ====== render ====== */
+let cur = 0, curPhoto = 0;
+const $ = s => document.querySelector(s);
+
+function nodeById(id){ return NODES.find(n=>n.id===id); }
+function stepsOf(id){ return STEPS.filter(s=>s.node===id); }
+
+function renderSpine(){
+  const box = $('#nodes'); box.innerHTML='';
+  const activeNode = STEPS[cur].node;
+  const activeIdx = NODES.findIndex(n=>n.id===activeNode);
+  NODES.forEach((nd,i)=>{
+    const cnt = stepsOf(nd.id).length;
+    const b = document.createElement('button');
+    b.className='node'+(cnt===0?' empty':'')+(nd.id===activeNode?' active':(i<activeIdx&&cnt>0?' done':''));
+    b.innerHTML=`<span class="num">${nd.n}</span>
+      <span class="lbl">${nd.title}</span>
+      <span class="cnt">${cnt? cnt+'&nbsp;шаг'+plural(cnt):'—'}</span>`;
+    if(cnt>0){ b.onclick=()=>{ const first=STEPS.findIndex(s=>s.node===nd.id); if(first>=0) go(first); }; }
+    box.appendChild(b);
+  });
+}
+function plural(n){ const m=n%10,h=n%100; if(m===1&&h!==11)return ''; if(m>=2&&m<=4&&(h<12||h>14))return 'а'; return 'ов'; }
+
+function renderStep(){
+  const s = STEPS[cur]; const nd = nodeById(s.node);
+  $('#st-node').textContent = `Узел ${nd.n} · ${nd.title}`;
+  $('#st-title').textContent = s.title;
+  curPhoto = 0;
+  setPhoto(0);
+  // thumbs
+  const th=$('#st-thumbs'); th.innerHTML='';
+  if(s.photos.length>1){
+    s.photos.forEach((p,i)=>{
+      const t=document.createElement('button');
+      t.className='thumb'+(i===0?' sel':'');
+      t.innerHTML=`<img src="${p}" alt="">`;
+      t.onclick=()=>setPhoto(i);
+      th.appendChild(t);
+    });
+  }
+  // parts
+  const pl=$('#pt-list'); pl.innerHTML='';
+  $('#pt-count').textContent = s.parts.length? s.parts.length+' поз.':'';
+  if(s.parts.length){
+    s.parts.forEach(p=>{
+      const el=document.createElement('div'); el.className='part';
+      const img=PART_IMG[p.ref];
+      const pic = img
+        ? `<div class="pic" data-full="${img}"><img src="${img}" alt=""></div>`
+        : `<div class="pic none">нет<br>фото</div>`;
+      el.innerHTML=`${pic}
+        <div class="body">
+          <span class="ref">${p.ref}</span>${p.qty?`<span class="qty">× ${p.qty}</span>`:''}
+          <span class="en">${p.en||''}</span>
+          ${p.ru?`<span class="ru">${p.ru}</span>`:''}
+        </div>`;
+      const pc=el.querySelector('.pic[data-full]');
+      if(pc) pc.onclick=()=>{ $('#lb-img').src=pc.dataset.full; $('#lb').classList.add('on'); };
+      pl.appendChild(el);
+    });
+  } else {
+    pl.innerHTML='<div class="empty-parts">На этом шаге отдельных деталей нет</div>';
+  }
+  const nt=$('#pt-note');
+  if(s.note){ nt.style.display='block'; nt.textContent=s.note; } else nt.style.display='none';
+  // counters + nav
+  $('#hc-cur').textContent = cur+1;
+  $('#hc-tot').textContent = STEPS.length;
+  $('#scount').textContent = `Шаг ${cur+1} из ${STEPS.length}`;
+  $('#prev').disabled = cur===0;
+  $('#next').disabled = cur===STEPS.length-1;
+  renderSpine();
+}
+function setPhoto(i){
+  curPhoto=i;
+  $('#st-main').src = STEPS[cur].photos[i];
+  document.querySelectorAll('.thumb').forEach((t,k)=>t.classList.toggle('sel',k===i));
+}
+function go(i){ cur=Math.max(0,Math.min(STEPS.length-1,i)); renderStep(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+$('#prev').onclick=()=>go(cur-1);
+$('#next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft')go(cur-1);
+  if(e.key==='ArrowRight')go(cur+1);
+  if(e.key==='Escape')$('#lb').classList.remove('on');
+});
+$('#st-main').onclick=()=>{ $('#lb-img').src=$('#st-main').src; $('#lb').classList.add('on'); };
+$('#lb').onclick=()=>$('#lb').classList.remove('on');
+
+renderStep();
+</script>
+</body>
+</html>
