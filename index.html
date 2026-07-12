@@ -150,6 +150,71 @@
     .hbar{padding:10px 14px}
     .brand .t{font-size:15px}
   }
+
+  /* ---------- lubrication mode ---------- */
+  .lubebtn{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:100px;
+    padding:5px 12px;background:var(--surface);cursor:pointer;color:var(--ink2);white-space:nowrap}
+  .lubebtn.on{background:var(--ruby);border-color:var(--ruby);color:#fff}
+  .imgbox{position:relative;display:inline-block;line-height:0}
+  .imgbox img.main{display:block}
+  .mlayer{position:absolute;inset:0;pointer-events:none;display:none}
+  body.lube-on .mlayer{display:block}
+  body.edit .mlayer{display:block;pointer-events:auto;cursor:crosshair}
+  .marker{position:absolute;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;
+    border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45);display:grid;place-items:center;
+    color:#fff;font:600 11px/1 var(--mono);pointer-events:auto;cursor:pointer;user-select:none;touch-action:none}
+  .marker.sel{outline:3px solid #ffd24d;outline-offset:1px}
+  .marker.oil-none::after{content:"";position:absolute;width:24px;height:2.5px;background:#fff;transform:rotate(45deg);border-radius:2px}
+  @keyframes mpulse{0%,100%{box-shadow:0 1px 5px rgba(0,0,0,.45)}50%{box-shadow:0 0 0 9px rgba(255,210,77,.55)}}
+  .marker.pulse{animation:mpulse .75s ease 2}
+
+  .lubepanel{display:none;border-top:1px solid var(--line2);padding:14px 18px;background:var(--panel)}
+  body.lube-on .lubepanel{display:block}
+  .lp-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  .lp-title{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ruby);font-weight:600}
+  .lp-filter{margin-left:auto;font-size:12px;color:var(--ink2);display:flex;gap:6px;align-items:center;cursor:pointer;user-select:none}
+  .lp-row{display:flex;gap:10px;align-items:flex-start;padding:7px 8px;border-radius:8px;cursor:pointer}
+  .lp-row:hover{background:var(--surface)}
+  .lp-row.hl{background:var(--ruby-soft)}
+  .lp-dot{width:17px;height:17px;border-radius:50%;flex:none;margin-top:1px;border:2px solid #fff;
+    box-shadow:0 0 0 1px var(--line);display:grid;place-items:center;color:#fff;font:600 9px/1 var(--mono)}
+  .lp-oil{font-family:var(--mono);font-size:12.5px;font-weight:650}
+  .lp-qty{font-size:12px;color:var(--ink2)}
+  .lp-note{font-size:12px;color:var(--ink2)}
+  .lp-ph{font-family:var(--mono);font-size:10px;color:var(--ink3);border:1px solid var(--line);border-radius:4px;padding:1px 5px;margin-left:6px}
+  .lp-empty{font-size:13px;color:var(--ink3);padding:4px 2px}
+  .lp-legend{margin-top:8px;font-size:12px;color:var(--ink2)}
+  .lp-legend summary{cursor:pointer;font-family:var(--mono);font-size:11px;color:var(--ink3)}
+  .lgrid{display:flex;flex-direction:column;gap:6px;padding-top:8px}
+  .litem{display:flex;align-items:center;gap:8px}
+  .lp-src{margin-top:10px;font-size:11px;color:var(--ink3);font-family:var(--mono)}
+
+  .editbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:70;background:#1b1f24;color:#e8eaed;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(0,0,0,.35)}
+  body.edit .editbar{display:block}
+  body.edit{padding-bottom:190px}
+  .eb-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+  .oilchip{border:1px solid #3a4048;border-radius:100px;padding:5px 10px;background:#262b31;color:#cfd3d8;
+    font:600 11.5px var(--mono);cursor:pointer;display:flex;gap:6px;align-items:center}
+  .oilchip .d{width:12px;height:12px;border-radius:50%}
+  .oilchip.on{border-color:#ffd24d;color:#fff;background:#30363d}
+  .eb-row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .eb-row2 select,.eb-row2 input{background:#262b31;border:1px solid #3a4048;color:#e8eaed;border-radius:8px;padding:7px 9px;font-size:13px}
+  #eb-note{flex:1;min-width:130px}
+  .ebtn{border:1px solid #3a4048;background:#262b31;color:#e8eaed;border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer}
+  .ebtn.prim{background:var(--ruby);border-color:var(--ruby);color:#fff}
+  .ebtn.danger{color:#ff8a8a}
+  .ebtn:disabled{opacity:.4;cursor:default}
+  .eb-hint{font-size:11px;color:#9aa2ab;margin-top:7px}
+  .exportov{display:none;position:fixed;inset:0;z-index:90;background:rgba(10,12,14,.7);padding:20px;place-items:center}
+  .exportov.on{display:grid}
+  .exbox{background:#fff;border-radius:12px;max-width:720px;width:100%;padding:16px;display:flex;flex-direction:column;gap:10px}
+  .exhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .exhead b{font-size:13px}
+  .exbox .ebtn{background:var(--surface);color:var(--ink);border-color:var(--line)}
+  .exbox .ebtn.prim{background:var(--ruby);border-color:var(--ruby);color:#fff}
+  #ex-ta{width:100%;height:300px;font:12px var(--mono);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre}
+  .exfoot{display:flex;gap:8px;justify-content:flex-end}
 </style>
 </head>
 <body>
@@ -160,6 +225,7 @@
       <span class="t">Тренажёр сборки</span>
     </div>
     <div class="hcount">Шаг <b id="hc-cur">1</b> / <span id="hc-tot">1</span></div>
+    <button class="lubebtn" id="lubebtn" aria-pressed="false">💧 Смазка</button>
   </div>
 </header>
 
@@ -176,8 +242,17 @@
       <div class="eyebrow" id="st-node">Узел</div>
       <h1 id="st-title">—</h1>
     </div>
-    <div class="photowrap"><img class="main" id="st-main" alt=""></div>
+    <div class="photowrap"><div class="imgbox"><img class="main" id="st-main" alt=""><div class="mlayer" id="mlayer"></div></div></div>
     <div class="thumbs" id="st-thumbs"></div>
+    <div class="lubepanel" id="lubepanel">
+      <div class="lp-head">
+        <span class="lp-title">Смазка на этом шаге</span>
+        <label class="lp-filter"><input type="checkbox" id="lubefilter"> только шаги со смазкой</label>
+      </div>
+      <div class="lp-list" id="lp-list"></div>
+      <details class="lp-legend"><summary>Легенда масел</summary><div id="lp-legend"></div></details>
+      <div class="lp-src">Источник: Rolex Tech. Info. No. 25-1 · разметка точек — Роман</div>
+    </div>
   </section>
 
   <!-- parts -->
@@ -194,6 +269,23 @@
     <button class="nbtn prim" id="next">Вперёд →</button>
   </div>
 </div>
+
+<div class="editbar" id="editbar">
+  <div class="eb-row" id="eb-oils"></div>
+  <div class="eb-row2">
+    <select id="eb-qty"></select>
+    <input id="eb-note" placeholder="заметка (необязательно)">
+    <button id="eb-del" class="ebtn danger" disabled>Удалить</button>
+    <button id="eb-export" class="ebtn prim">Экспорт</button>
+    <button id="eb-import" class="ebtn">Импорт</button>
+  </div>
+  <div class="eb-hint">Тап по фото — поставить точку · тап по точке — выбрать · перетаскивание — сдвинуть · выбор масла/количества при выбранной точке меняет её</div>
+</div>
+<div class="exportov" id="exportov"><div class="exbox">
+  <div class="exhead"><b id="ex-title">Экспорт</b><button id="ex-close" class="ebtn">Закрыть</button></div>
+  <textarea id="ex-ta" spellcheck="false"></textarea>
+  <div class="exfoot"><button id="ex-copy" class="ebtn prim">Скопировать</button><button id="ex-apply" class="ebtn" style="display:none">Применить импорт</button></div>
+</div></div>
 
 <div class="lb" id="lb"><img id="lb-img" alt=""></div>
 
@@ -699,6 +791,224 @@ const STEPS = [
   },
 ];
 
+/* ====== lubrication ====== */
+const OILS = {
+  '9010':  {label:'Moebius 9010',   color:'#d81b3f', desc:'масло, низкое давление в опорах: анкерное колесо, амортизаторы баланса'},
+  'HP1300':{label:'HP1300',         color:'#1565c0', desc:'масло, высокое давление: центральное, третье, секундное колесо, ось барабана, автоподзавод'},
+  '9415':  {label:'Moebius 9415',   color:'#2e7d32', desc:'смазка импульсных поверхностей палет и зубьев анкерного колеса (28800 пк/ч)'},
+  'KT22':  {label:'KT22',           color:'#ef8f00', desc:'фрикционные пары: ремонтуар, переводной механизм'},
+  '8200':  {label:'Moebius 8200',   color:'#7b3fa0', desc:'смазка — по смазочной карте'},
+  'FIX':   {label:'Fixodrop',       color:'#00838f', desc:'эпиляж (реф. 3109): палеты, анкерное и реверсивные колёса, секундное колесо'},
+  'BRAKE': {label:'Смазка барабана',color:'#5d4037', desc:'стенка барабана: поверхность скольжения накладки пружины'},
+  'none':  {label:'Не смазывать',   color:'#616161', desc:'точка сознательно без смазки (no friction)'},
+};
+const QTYS = ['1 капля','½ капли','экономно','по min/max'];
+
+/* LUBE-DATA-START — сюда вставляется экспорт из редактора (?edit=1) */
+let LUBE = [];
+/* LUBE-DATA-END */
+
+const EDIT = new URLSearchParams(location.search).has('edit');
+let lubeOn = false, selMarker = -1, ebOil = '9010', ebQty = QTYS[0];
+
+function stepLube(stepId){ const out=[]; LUBE.forEach((p,i)=>{ if(p.step===stepId) out.push({p,i}); }); return out; }
+
+function renderMarkers(){
+  const ml = document.getElementById('mlayer'); if(!ml) return; ml.innerHTML='';
+  const s = STEPS[cur];
+  stepLube(s.id).forEach((o,k)=>{
+    if(o.p.photo!==curPhoto) return;
+    const oil = OILS[o.p.oil]||{color:'#888',label:o.p.oil};
+    const m=document.createElement('div');
+    m.className='marker'+(o.p.oil==='none'?' oil-none':'')+(o.i===selMarker?' sel':'');
+    m.style.left=o.p.x+'%'; m.style.top=o.p.y+'%';
+    m.style.background=oil.color;
+    m.textContent=k+1;
+    m.title=oil.label+(o.p.qty?' · '+o.p.qty:'');
+    m.dataset.idx=o.i;
+    attachMarkerEvents(m);
+    ml.appendChild(m);
+  });
+}
+
+function renderLubePanel(){
+  const box=document.getElementById('lp-list'); if(!box) return;
+  const s=STEPS[cur]; box.innerHTML='';
+  const pts=stepLube(s.id);
+  if(!pts.length){
+    box.innerHTML='<div class="lp-empty">'+(EDIT?'Точек пока нет — тапните по фото, чтобы поставить.':'Точки смазки для этого шага не размечены.')+'</div>';
+    return;
+  }
+  pts.forEach((o,k)=>{
+    const oil=OILS[o.p.oil]||{label:o.p.oil,color:'#888'};
+    const r=document.createElement('div'); r.className='lp-row'; r.dataset.idx=o.i;
+    r.innerHTML='<span class="lp-dot" style="background:'+oil.color+'">'+(k+1)+'</span>'+
+      '<div><span class="lp-oil">'+oil.label+'</span>'+
+      (o.p.qty?'<span class="lp-qty"> · '+o.p.qty+'</span>':'')+
+      (s.photos.length>1?'<span class="lp-ph">фото '+(o.p.photo+1)+'</span>':'')+
+      (o.p.note?'<div class="lp-note">'+o.p.note+'</div>':'')+'</div>';
+    r.onclick=()=>{
+      if(o.p.photo!==curPhoto) setPhoto(o.p.photo);
+      if(EDIT){ selMarker=o.i; loadMarkerToBar(); }
+      renderMarkers();
+      const m=document.querySelector('.marker[data-idx="'+o.i+'"]');
+      if(m){ m.classList.add('pulse'); setTimeout(()=>m.classList.remove('pulse'),1600); }
+    };
+    box.appendChild(r);
+  });
+}
+
+function hlRow(idx){
+  document.querySelectorAll('.lp-row').forEach(r=>r.classList.toggle('hl',+r.dataset.idx===idx));
+  const r=document.querySelector('.lp-row[data-idx="'+idx+'"]');
+  if(r) r.scrollIntoView({block:'nearest',behavior:'smooth'});
+  setTimeout(()=>document.querySelectorAll('.lp-row.hl').forEach(x=>x.classList.remove('hl')),1600);
+}
+
+function attachMarkerEvents(m){
+  if(!EDIT){ m.onclick=e=>{ e.stopPropagation(); hlRow(+m.dataset.idx); }; return; }
+  m.addEventListener('pointerdown',e=>{
+    e.stopPropagation(); e.preventDefault();
+    const idx=+m.dataset.idx;
+    selMarker=idx; loadMarkerToBar();
+    document.querySelectorAll('.marker').forEach(x=>x.classList.toggle('sel',x===m));
+    m.setPointerCapture(e.pointerId);
+    const r=document.getElementById('mlayer').getBoundingClientRect();
+    let moved=false; const sx=e.clientX, sy=e.clientY;
+    const move=ev=>{
+      if(Math.abs(ev.clientX-sx)+Math.abs(ev.clientY-sy)>4) moved=true;
+      if(!moved) return;
+      LUBE[idx].x=+Math.min(100,Math.max(0,(ev.clientX-r.left)/r.width*100)).toFixed(1);
+      LUBE[idx].y=+Math.min(100,Math.max(0,(ev.clientY-r.top)/r.height*100)).toFixed(1);
+      m.style.left=LUBE[idx].x+'%'; m.style.top=LUBE[idx].y+'%';
+    };
+    const up=()=>{ m.removeEventListener('pointermove',move); m.removeEventListener('pointerup',up); if(moved){ saveDraft(); renderLubePanel(); } };
+    m.addEventListener('pointermove',move);
+    m.addEventListener('pointerup',up);
+  });
+}
+
+function loadMarkerToBar(){
+  const p=LUBE[selMarker]; if(!p) return;
+  ebOil=p.oil; ebQty=p.qty||QTYS[0];
+  document.querySelectorAll('.oilchip').forEach(x=>x.classList.toggle('on',x.dataset.oil===p.oil));
+  const q=document.getElementById('eb-qty'); if(q) q.value=ebQty;
+  document.getElementById('eb-note').value=p.note||'';
+  document.getElementById('eb-del').disabled=false;
+}
+
+function buildEditbar(){
+  const row=document.getElementById('eb-oils');
+  Object.keys(OILS).forEach(k=>{
+    const o=OILS[k];
+    const c=document.createElement('button'); c.className='oilchip'+(k===ebOil?' on':''); c.dataset.oil=k;
+    c.innerHTML='<span class="d" style="background:'+o.color+'"></span>'+o.label;
+    c.onclick=()=>{
+      ebOil=k;
+      document.querySelectorAll('.oilchip').forEach(x=>x.classList.toggle('on',x===c));
+      if(selMarker>=0&&LUBE[selMarker]){ LUBE[selMarker].oil=k; renderMarkers(); renderLubePanel(); saveDraft(); }
+    };
+    row.appendChild(c);
+  });
+  const q=document.getElementById('eb-qty');
+  QTYS.forEach(v=>{ const op=document.createElement('option'); op.value=v; op.textContent=v; q.appendChild(op); });
+  q.onchange=()=>{ ebQty=q.value; if(selMarker>=0&&LUBE[selMarker]){ LUBE[selMarker].qty=ebQty; renderLubePanel(); saveDraft(); } };
+  document.getElementById('eb-note').onchange=()=>{ if(selMarker>=0&&LUBE[selMarker]){ LUBE[selMarker].note=document.getElementById('eb-note').value.trim(); renderLubePanel(); saveDraft(); } };
+  document.getElementById('eb-del').onclick=()=>{
+    if(selMarker<0) return;
+    LUBE.splice(selMarker,1); selMarker=-1;
+    document.getElementById('eb-del').disabled=true;
+    renderMarkers(); renderLubePanel(); renderSpine(); saveDraft();
+  };
+  document.getElementById('eb-export').onclick=openExport;
+  document.getElementById('eb-import').onclick=openImport;
+  document.getElementById('mlayer').addEventListener('click',e=>{
+    if(e.target!==e.currentTarget) return;
+    const r=e.currentTarget.getBoundingClientRect();
+    const x=+((e.clientX-r.left)/r.width*100).toFixed(1);
+    const y=+((e.clientY-r.top)/r.height*100).toFixed(1);
+    LUBE.push({step:STEPS[cur].id, photo:curPhoto, x:x, y:y, oil:ebOil, qty:ebQty, note:document.getElementById('eb-note').value.trim()});
+    selMarker=LUBE.length-1;
+    document.getElementById('eb-del').disabled=false;
+    renderMarkers(); renderLubePanel(); renderSpine(); saveDraft();
+  });
+}
+
+function lubeJSON(){
+  const arr=LUBE.slice().sort((a,b)=>a.step-b.step||a.photo-b.photo||a.y-b.y);
+  return 'let LUBE = '+JSON.stringify(arr,null,2)+';';
+}
+function openExport(){
+  document.getElementById('ex-title').textContent='Экспорт — вставьте блок в index.html между метками LUBE-DATA-START и LUBE-DATA-END';
+  document.getElementById('ex-ta').value=lubeJSON();
+  document.getElementById('ex-apply').style.display='none';
+  document.getElementById('exportov').classList.add('on');
+}
+function openImport(){
+  document.getElementById('ex-title').textContent='Импорт — вставьте сохранённый блок LUBE и нажмите «Применить»';
+  document.getElementById('ex-ta').value='';
+  document.getElementById('ex-apply').style.display='';
+  document.getElementById('exportov').classList.add('on');
+}
+
+function saveDraft(){ if(!EDIT) return; try{ localStorage.setItem('lube3135-draft', JSON.stringify(LUBE)); }catch(e){} }
+
+function renderLegend(){
+  const g=document.getElementById('lp-legend');
+  g.innerHTML='<div class="lgrid">'+Object.keys(OILS).map(k=>{
+    const o=OILS[k];
+    return '<span class="litem"><span class="lp-dot" style="background:'+o.color+'"></span><span><b style="font-family:var(--mono);font-size:12px">'+o.label+'</b> <span style="color:var(--ink3)">— '+o.desc+'</span></span></span>';
+  }).join('')+'</div>';
+}
+
+function setLube(on){
+  lubeOn = on || EDIT;
+  document.body.classList.toggle('lube-on', lubeOn);
+  const b=document.getElementById('lubebtn');
+  b.classList.toggle('on', lubeOn); b.setAttribute('aria-pressed', lubeOn);
+  renderSpine(); renderMarkers();
+}
+
+function navStep(dir){
+  const f=document.getElementById('lubefilter');
+  if(lubeOn && f && f.checked){
+    let i=cur+dir;
+    while(i>=0 && i<STEPS.length && stepLube(STEPS[i].id).length===0) i+=dir;
+    if(i>=0 && i<STEPS.length) go(i);
+  } else go(cur+dir);
+}
+
+function initLube(){
+  renderLegend();
+  document.getElementById('lubebtn').onclick=()=>setLube(!lubeOn);
+  document.getElementById('lubefilter').onchange=()=>renderSpine();
+  document.getElementById('ex-close').onclick=()=>document.getElementById('exportov').classList.remove('on');
+  document.getElementById('ex-copy').onclick=()=>{
+    const ta=document.getElementById('ex-ta'); ta.select();
+    try{ navigator.clipboard.writeText(ta.value); }catch(e){ try{ document.execCommand('copy'); }catch(e2){} }
+  };
+  document.getElementById('ex-apply').onclick=()=>{
+    try{
+      let t=document.getElementById('ex-ta').value.trim().replace(/^let\s+LUBE\s*=\s*/,'').replace(/;\s*$/,'');
+      const arr=JSON.parse(t);
+      if(Array.isArray(arr)){ LUBE=arr; selMarker=-1; renderMarkers(); renderLubePanel(); renderSpine(); saveDraft(); document.getElementById('exportov').classList.remove('on'); }
+    }catch(e){ alert('Не удалось разобрать JSON: '+e.message); }
+  };
+  if(EDIT){
+    document.body.classList.add('edit');
+    buildEditbar();
+    try{
+      const d=localStorage.getItem('lube3135-draft');
+      if(d){
+        const arr=JSON.parse(d);
+        if(Array.isArray(arr)&&arr.length&&!LUBE.length&&confirm('Найден черновик разметки ('+arr.length+' точек). Восстановить?')) LUBE=arr;
+      }
+    }catch(e){}
+  }
+  setLube(EDIT);
+  renderLubePanel(); renderMarkers();
+}
+
 /* ====== render ====== */
 let cur = 0, curPhoto = 0;
 const $ = s => document.querySelector(s);
@@ -716,7 +1026,7 @@ function renderSpine(){
     b.className='node'+(cnt===0?' empty':'')+(nd.id===activeNode?' active':(i<activeIdx&&cnt>0?' done':''));
     b.innerHTML=`<span class="num">${nd.n}</span>
       <span class="lbl">${nd.title}</span>
-      <span class="cnt">${cnt? cnt+'&nbsp;шаг'+plural(cnt):'—'}</span>`;
+      <span class="cnt">${cnt? cnt+'&nbsp;шаг'+plural(cnt):'—'}${(lubeOn&&stepsOf(nd.id).some(s=>stepLube(s.id).length))?' · <span style="color:#1565c0">💧'+stepsOf(nd.id).filter(s=>stepLube(s.id).length>0).length+'</span>':''}</span>`;
     if(cnt>0){ b.onclick=()=>{ const first=STEPS.findIndex(s=>s.node===nd.id); if(first>=0) go(first); }; }
     box.appendChild(b);
   });
@@ -728,7 +1038,10 @@ function renderStep(){
   $('#st-node').textContent = `Узел ${nd.n} · ${nd.title}`;
   $('#st-title').textContent = s.title;
   curPhoto = 0;
+  selMarker = -1;
+  const ebd=document.getElementById('eb-del'); if(ebd) ebd.disabled=true;
   setPhoto(0);
+  renderLubePanel();
   // thumbs
   const th=$('#st-thumbs'); th.innerHTML='';
   if(s.photos.length>1){
@@ -777,20 +1090,22 @@ function setPhoto(i){
   curPhoto=i;
   $('#st-main').src = STEPS[cur].photos[i];
   document.querySelectorAll('.thumb').forEach((t,k)=>t.classList.toggle('sel',k===i));
+  renderMarkers();
 }
 function go(i){ cur=Math.max(0,Math.min(STEPS.length-1,i)); renderStep(); window.scrollTo({top:0,behavior:'smooth'}); }
 
-$('#prev').onclick=()=>go(cur-1);
-$('#next').onclick=()=>go(cur+1);
+$('#prev').onclick=()=>navStep(-1);
+$('#next').onclick=()=>navStep(1);
 document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowLeft')go(cur-1);
-  if(e.key==='ArrowRight')go(cur+1);
-  if(e.key==='Escape')$('#lb').classList.remove('on');
+  if(e.key==='ArrowLeft')navStep(-1);
+  if(e.key==='ArrowRight')navStep(1);
+  if(e.key==='Escape'){$('#lb').classList.remove('on');document.getElementById('exportov').classList.remove('on');}
 });
-$('#st-main').onclick=()=>{ $('#lb-img').src=$('#st-main').src; $('#lb').classList.add('on'); };
+$('#st-main').onclick=()=>{ if(EDIT) return; $('#lb-img').src=$('#st-main').src; $('#lb').classList.add('on'); };
 $('#lb').onclick=()=>$('#lb').classList.remove('on');
 
 renderStep();
+initLube();
 </script>
 </body>
 </html>
