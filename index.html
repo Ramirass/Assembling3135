@@ -171,6 +171,8 @@
   .marker svg .body{stroke:#fff;stroke-width:1.6}
   .marker .mn{position:absolute;top:1px;left:0;width:100%;height:22px;display:grid;place-items:center;
     color:#fff;font:600 11px/1 var(--mono);transform:rotate(30deg)}
+  .marker.flip{transform:translate(-50%,-100%) rotate(30deg)}
+  .marker.flip .mn{transform:rotate(-30deg)}
   .marker.sel{filter:drop-shadow(0 0 5px #ffd24d) drop-shadow(0 1px 3px rgba(0,0,0,.4))}
   .marker.sel svg .body{stroke:#ffd24d}
   @keyframes mpulse{0%,100%{filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}50%{filter:drop-shadow(0 0 9px #ffd24d)}}
@@ -283,6 +285,7 @@
   <div class="eb-row2">
     <select id="eb-qty"></select>
     <input id="eb-note" placeholder="заметка (необязательно)">
+    <button id="eb-flip" class="ebtn" disabled>⇋ Зеркально</button>
     <button id="eb-del" class="ebtn danger" disabled>Удалить</button>
     <button id="eb-export" class="ebtn prim">Экспорт</button>
     <button id="eb-import" class="ebtn">Импорт</button>
@@ -980,8 +983,8 @@ let LUBE = [
   {
     "step": 8,
     "photo": 0,
-    "x": 56.9,
-    "y": 58.4,
+    "x": 56.4,
+    "y": 58.7,
     "oil": "9010",
     "qty": "1 капля",
     "note": ""
@@ -1086,6 +1089,15 @@ let LUBE = [
     "note": ""
   },
   {
+    "step": 18,
+    "photo": 0,
+    "x": 51.7,
+    "y": 70.6,
+    "oil": "9010",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
     "step": 19,
     "photo": 0,
     "x": 48,
@@ -1093,6 +1105,366 @@ let LUBE = [
     "oil": "KT22",
     "qty": "1 капля",
     "note": ""
+  },
+  {
+    "step": 20,
+    "photo": 0,
+    "x": 53.6,
+    "y": 35.6,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 20,
+    "photo": 0,
+    "x": 39.2,
+    "y": 37.8,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 20,
+    "photo": 0,
+    "x": 71,
+    "y": 48.9,
+    "oil": "KT22",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 20,
+    "photo": 0,
+    "x": 50,
+    "y": 66.4,
+    "oil": "9010",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 21,
+    "photo": 0,
+    "x": 41.6,
+    "y": 45.1,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 21,
+    "photo": 0,
+    "x": 43.4,
+    "y": 55,
+    "oil": "9010",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 21,
+    "photo": 1,
+    "x": 42.1,
+    "y": 49.8,
+    "oil": "KT22",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 21,
+    "photo": 1,
+    "x": 59.6,
+    "y": 51.3,
+    "oil": "KT22",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 21,
+    "photo": 1,
+    "x": 48,
+    "y": 61.7,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 21,
+    "photo": 2,
+    "x": 53,
+    "y": 54.5,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 0,
+    "x": 35.6,
+    "y": 47.1,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 0,
+    "x": 59,
+    "y": 50,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 0,
+    "x": 53.3,
+    "y": 54.6,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 0,
+    "x": 29.9,
+    "y": 57.9,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 0,
+    "x": 68.6,
+    "y": 65.7,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 1,
+    "x": 20,
+    "y": 48.2,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 1,
+    "x": 92,
+    "y": 49.4,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 1,
+    "x": 31,
+    "y": 49.5,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 1,
+    "x": 63.8,
+    "y": 50.1,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": "На все 4 стороны"
+  },
+  {
+    "step": 26,
+    "photo": 0,
+    "x": 63.2,
+    "y": 49.5,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 26,
+    "photo": 0,
+    "x": 74.3,
+    "y": 53.9,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 26,
+    "photo": 1,
+    "x": 54.2,
+    "y": 43.1,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": "По кругу"
+  },
+  {
+    "step": 26,
+    "photo": 1,
+    "x": 51.3,
+    "y": 60.6,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": "По кругу"
+  },
+  {
+    "step": 31,
+    "photo": 0,
+    "x": 31.5,
+    "y": 46.2,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": "На штифт"
+  },
+  {
+    "step": 35,
+    "photo": 0,
+    "x": 41.2,
+    "y": 52.9,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 37,
+    "photo": 0,
+    "x": 40.7,
+    "y": 52.7,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 38,
+    "photo": 0,
+    "x": 37.4,
+    "y": 60.9,
+    "oil": "HP1300",
+    "qty": "1 капля",
+    "note": "По капле на каждые 10 чисел"
+  },
+  {
+    "step": 39,
+    "photo": 0,
+    "x": 26.9,
+    "y": 47.6,
+    "oil": "KT22",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 39,
+    "photo": 0,
+    "x": 47,
+    "y": 69.3,
+    "oil": "FIX",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 39,
+    "photo": 0,
+    "x": 57.8,
+    "y": 69.3,
+    "oil": "FIX",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 39,
+    "photo": 0,
+    "x": 67.4,
+    "y": 70,
+    "oil": "FIX",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 39,
+    "photo": 0,
+    "x": 38.3,
+    "y": 70.8,
+    "oil": "FIX",
+    "qty": "1 капля",
+    "note": ""
+  },
+  {
+    "step": 39,
+    "photo": 1,
+    "x": 29.5,
+    "y": 41.3,
+    "oil": "HP1000",
+    "qty": "1 капля",
+    "note": "В 2 местах на колесо, тонкой пленкой"
+  },
+  {
+    "step": 39,
+    "photo": 1,
+    "x": 33.7,
+    "y": 45.1,
+    "oil": "HP1000",
+    "qty": "1 капля",
+    "note": "В 2 местах на колесо, тонкой пленкой"
+  },
+  {
+    "step": 39,
+    "photo": 1,
+    "x": 33.8,
+    "y": 52.1,
+    "oil": "HP1000",
+    "qty": "1 капля",
+    "note": "В 2 местах на колесо, тонкой пленкой"
+  },
+  {
+    "step": 39,
+    "photo": 1,
+    "x": 55.7,
+    "y": 67.4,
+    "oil": "HP1000",
+    "qty": "1 капля",
+    "note": "В 2 местах на колесо, тонкой пленкой"
+  },
+  {
+    "step": 39,
+    "photo": 1,
+    "x": 35.6,
+    "y": 68.4,
+    "oil": "HP1000",
+    "qty": "1 капля",
+    "note": "В 2 местах на колесо, тонкой пленкой"
+  },
+  {
+    "step": 39,
+    "photo": 4,
+    "x": 30,
+    "y": 39.3,
+    "oil": "HP1000",
+    "qty": "1 капля",
+    "note": "В 2 местах на колесо, тонкой пленкой"
+  },
+  {
+    "step": 39,
+    "photo": 4,
+    "x": 33.8,
+    "y": 43.5,
+    "oil": "HP1000",
+    "qty": "1 капля",
+    "note": "В 2 местах на колесо, тонкой пленкой"
+  },
+  {
+    "step": 39,
+    "photo": 4,
+    "x": 33.8,
+    "y": 50.7,
+    "oil": "HP1000",
+    "qty": "1 капля",
+    "note": "В 2 местах на колесо, тонкой пленкой"
   }
 ];
 /* LUBE-DATA-END */
@@ -1136,7 +1508,7 @@ function renderMarkers(){
     if(o.p.photo!==curPhoto) return;
     const oil = OILS[o.p.oil]||{color:'#888',label:o.p.oil};
     const m=document.createElement('div');
-    m.className='marker'+(o.p.oil==='none'?' oil-none':'')+(o.i===selMarker?' sel':'');
+    m.className='marker'+(o.p.oil==='none'?' oil-none':'')+(o.p.flip?' flip':'')+(o.i===selMarker?' sel':'');
     m.style.left=o.p.x+'%'; m.style.top=o.p.y+'%';
     m.innerHTML='<svg viewBox="0 0 22 46">'+
       '<path class="body" fill="'+oil.color+'" d="M11,45 C9.5,34 1.5,21 1.5,11 A9.5,9.5 0 1,1 20.5,11 C20.5,21 12.5,34 11,45 Z"/>'+
@@ -1213,6 +1585,7 @@ function loadMarkerToBar(){
   const q=document.getElementById('eb-qty'); if(q) q.value=ebQty;
   document.getElementById('eb-note').value=p.note||'';
   document.getElementById('eb-del').disabled=false;
+  document.getElementById('eb-flip').disabled=false;
 }
 
 function buildEditbar(){
@@ -1232,10 +1605,17 @@ function buildEditbar(){
   QTYS.forEach(v=>{ const op=document.createElement('option'); op.value=v; op.textContent=v; q.appendChild(op); });
   q.onchange=()=>{ ebQty=q.value; if(selMarker>=0&&LUBE[selMarker]){ LUBE[selMarker].qty=ebQty; renderLubePanel(); saveDraft(); } };
   document.getElementById('eb-note').onchange=()=>{ if(selMarker>=0&&LUBE[selMarker]){ LUBE[selMarker].note=document.getElementById('eb-note').value.trim(); renderLubePanel(); saveDraft(); } };
+  document.getElementById('eb-flip').onclick=()=>{
+    if(selMarker<0||!LUBE[selMarker]) return;
+    LUBE[selMarker].flip=!LUBE[selMarker].flip;
+    if(!LUBE[selMarker].flip) delete LUBE[selMarker].flip;
+    renderMarkers(); saveDraft();
+  };
   document.getElementById('eb-del').onclick=()=>{
     if(selMarker<0) return;
     LUBE.splice(selMarker,1); selMarker=-1;
     document.getElementById('eb-del').disabled=true;
+    document.getElementById('eb-flip').disabled=true;
     renderMarkers(); renderLubePanel(); renderSpine(); saveDraft();
   };
   document.getElementById('eb-export').onclick=openExport;
@@ -1248,6 +1628,7 @@ function buildEditbar(){
     LUBE.push({step:STEPS[cur].id, photo:curPhoto, x:x, y:y, oil:ebOil, qty:ebQty, note:document.getElementById('eb-note').value.trim()});
     selMarker=LUBE.length-1;
     document.getElementById('eb-del').disabled=false;
+    document.getElementById('eb-flip').disabled=false;
     renderMarkers(); renderLubePanel(); renderSpine(); saveDraft();
   });
 }
@@ -1360,6 +1741,7 @@ function renderStep(){
   curPhoto = 0;
   selMarker = -1;
   const ebd=document.getElementById('eb-del'); if(ebd) ebd.disabled=true;
+  const ebf=document.getElementById('eb-flip'); if(ebf) ebf.disabled=true;
   if(lubeOn) probeLube(s.id);
   setPhoto(0);
   renderLubePanel();
