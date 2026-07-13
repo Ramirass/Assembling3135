@@ -287,6 +287,7 @@
     <button id="eb-export" class="ebtn prim">Экспорт</button>
     <button id="eb-import" class="ebtn">Импорт</button>
   </div>
+  <div class="eb-hint" id="eb-files"></div>
   <div class="eb-hint">Тап по фото — поставить точку · тап по точке — выбрать · перетаскивание — сдвинуть · выбор масла/количества при выбранной точке меняет её</div>
 </div>
 <div class="exportov" id="exportov"><div class="exbox">
@@ -455,7 +456,7 @@ const STEPS = [
     note:'Синим отмечен мост колёсной системы. Фиксируется тремя винтами 3135-5110.'
   },
   {
-    id:18, node:'barrel',
+    id:6, node:'barrel',
     title:'Сборка барабана (заводка пружины)',
     photos:[IMG18A, IMG18B, IMG18C, IMG18D],
     parts:[
@@ -466,7 +467,7 @@ const STEPS = [
     note:'Кадры 1-4: детали барабана, заводка пружины 3135-311 в барабан и установка вала 3135-307 — до постановки барабана на платину.'
   },
   {
-    id:6, node:'barrel',
+    id:7, node:'barrel',
     title:'Барабан',
     photos:[IMG6],
     parts:[
@@ -475,7 +476,7 @@ const STEPS = [
     note:'Синим отмечен барабан с заводной пружиной, установленный на платину.'
   },
   {
-    id:7, node:'barrel',
+    id:8, node:'barrel',
     title:'Мост барабана',
     photos:[IMG7],
     parts:[
@@ -485,7 +486,7 @@ const STEPS = [
     note:'Синим отмечен мост барабана. Фиксируется двумя винтами 3135-5110.'
   },
   {
-    id:8, node:'barrel',
+    id:9, node:'barrel',
     title:'Барабанное (храповое) колесо',
     photos:[IMG8],
     parts:[
@@ -495,7 +496,7 @@ const STEPS = [
     note:'Синим отмечено барабанное колесо на каре. Фиксируется винтом 3135-5210.'
   },
   {
-    id:9, node:'barrel',
+    id:10, node:'barrel',
     title:'Сердечник промежуточного коронного колеса',
     photos:[IMG9],
     parts:[
@@ -504,7 +505,7 @@ const STEPS = [
     note:'Синим отмечено место установки сердечника промежуточного коронного колеса.'
   },
   {
-    id:10, node:'barrel',
+    id:11, node:'barrel',
     title:'Промежуточное коронное колесо',
     photos:[IMG10],
     parts:[
@@ -513,7 +514,7 @@ const STEPS = [
     note:'Синим отмечено промежуточное коронное колесо, установленное на сердечник.'
   },
   {
-    id:11, node:'barrel',
+    id:12, node:'barrel',
     title:'Переводной рычаг',
     photos:[IMG11],
     parts:[
@@ -523,7 +524,7 @@ const STEPS = [
     note:'Синим отмечена зона установки переводного рычага 3135-217 и винта 3135-5213 (винт промежуточного коронного колеса).'
   },
   {
-    id:12, node:'barrel',
+    id:13, node:'barrel',
     title:'Пружина остановки баланса (стоп-секунда)',
     photos:[IMG12],
     parts:[
@@ -532,7 +533,7 @@ const STEPS = [
     note:'Синим отмечена пружина остановки баланса (стоп-секунда) — золотистый рычажок у выреза выжимки.'
   },
   {
-    id:13, node:'windingBridge',
+    id:14, node:'windingBridge',
     title:'Мост заводного механизма (в сборе)',
     photos:[IMG13A, IMG13B],
     parts:[
@@ -544,7 +545,7 @@ const STEPS = [
     note:'Кадр 1 — детали узла, кадр 2 — собранный мост с коронным колесом. Коронное колесо фиксируется винтом 3135-5210.'
   },
   {
-    id:14, node:'windingBridge',
+    id:15, node:'windingBridge',
     title:'Установка моста заводного механизма на платину',
     photos:[IMG14],
     parts:[
@@ -553,7 +554,7 @@ const STEPS = [
     note:'Синим отмечен собранный мост заводного механизма 3135-130, установленный на платину (видна маркировка 3135).'
   },
   {
-    id:15, node:'pallet',
+    id:16, node:'pallet',
     title:'Анкерная вилка',
     photos:[IMG15],
     parts:[
@@ -562,7 +563,7 @@ const STEPS = [
     note:'Синим отмечена анкерная вилка, установленная на платину.'
   },
   {
-    id:16, node:'pallet',
+    id:17, node:'pallet',
     title:'Мост анкерной вилки',
     photos:[IMG16],
     parts:[
@@ -572,7 +573,7 @@ const STEPS = [
     note:'Синим отмечен мост анкерной вилки. Фиксируется двумя винтами 3135-5115.'
   },
   {
-    id:17, node:'balance',
+    id:18, node:'balance',
     title:'Баланс в сборе',
     photos:[IMG17],
     parts:[
@@ -805,7 +806,7 @@ const OILS = {
   'HP1300':{label:'HP1300',         color:'#1565c0', desc:'масло, высокое давление: центральное, третье, секундное колесо, ось барабана, автоподзавод'},
   '9415':  {label:'Moebius 9415',   color:'#2e7d32', desc:'смазка импульсных поверхностей палет и зубьев анкерного колеса (28800 пк/ч)'},
   'KT22':  {label:'KT22',           color:'#ef8f00', desc:'фрикционные пары: ремонтуар, переводной механизм'},
-  'FIX':   {label:'Fixodrop',       color:'#00838f', desc:'эпиляж (реф. 3109): палеты, анкерное и реверсивные колёса, секундное колесо'},
+  'FIX':   {label:'Fixodrop',       color:'#00838f', desc:'эпилам (реф. 3109): палеты, анкерное и реверсивные колёса, секундное колесо'},
   'BRAKE': {label:'Смазка барабана',color:'#5d4037', desc:'стенка барабана: поверхность скольжения накладки пружины'},
   'none':  {label:'Не смазывать',   color:'#616161', desc:'точка сознательно без смазки (no friction)'},
 };
@@ -1117,6 +1118,11 @@ function renderStep(){
 }
 function renderThumbs(){
   const s=STEPS[cur], ph=photosOf(s);
+  const ef=document.getElementById('eb-files');
+  if(ef){
+    const have=(LUBE_PHOTOS[s.id]||[]).length;
+    ef.textContent='Кадры смазки этого шага: img/lube/L'+s.id+'A.jpg, L'+s.id+'B.jpg…  ·  найдено: '+have;
+  }
   const th=$('#st-thumbs'); th.innerHTML='';
   if(ph.length>1){
     ph.forEach((p,i)=>{
