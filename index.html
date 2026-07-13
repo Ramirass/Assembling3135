@@ -94,6 +94,9 @@
     cursor:pointer;padding:0;background:#fff}
   .thumb img{width:100%;height:100%;object-fit:cover}
   .thumb.sel{border-color:var(--ruby);box-shadow:0 0 0 2px var(--ruby-soft)}
+  .thumb{position:relative}
+  .thumb .ld{position:absolute;top:1px;right:1px;font-size:11px;line-height:1;
+    background:rgba(255,255,255,.85);border-radius:5px;padding:1px 2px}
 
   /* ---------- parts panel ---------- */
   .parts{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);position:sticky;top:78px}
@@ -802,7 +805,6 @@ const OILS = {
   'HP1300':{label:'HP1300',         color:'#1565c0', desc:'масло, высокое давление: центральное, третье, секундное колесо, ось барабана, автоподзавод'},
   '9415':  {label:'Moebius 9415',   color:'#2e7d32', desc:'смазка импульсных поверхностей палет и зубьев анкерного колеса (28800 пк/ч)'},
   'KT22':  {label:'KT22',           color:'#ef8f00', desc:'фрикционные пары: ремонтуар, переводной механизм'},
-  '8200':  {label:'Moebius 8200',   color:'#7b3fa0', desc:'смазка — по смазочной карте'},
   'FIX':   {label:'Fixodrop',       color:'#00838f', desc:'эпиляж (реф. 3109): палеты, анкерное и реверсивные колёса, секундное колесо'},
   'BRAKE': {label:'Смазка барабана',color:'#5d4037', desc:'стенка барабана: поверхность скольжения накладки пружины'},
   'none':  {label:'Не смазывать',   color:'#616161', desc:'точка сознательно без смазки (no friction)'},
@@ -812,6 +814,33 @@ const QTYS = ['1 капля','½ капли','экономно','по min/max'];
 /* LUBE-DATA-START — сюда вставляется экспорт из редактора (?edit=1) */
 let LUBE = [];
 /* LUBE-DATA-END */
+
+/* LUBE-PHOTOS-START — кадры смазки по шагам. Заполняется автоматически
+   по конвенции img/lube/L<шаг><буква>.jpg (буквы подряд: A, B, C…, до H).
+   Можно задать и вручную: 18:['img/lube/L18A.jpg','img/lube/L18B.jpg'] */
+const LUBE_PHOTOS = {};
+/* LUBE-PHOTOS-END */
+const LUBE_DIR = 'img/lube/';
+const _probed = {};
+function probeLube(id){
+  if(_probed[id]) return; _probed[id]=true;
+  const letters='ABCDEFGH';
+  const have=(LUBE_PHOTOS[id]||[]).length;
+  (function next(k){
+    if(k>=letters.length) return;
+    const url=LUBE_DIR+'L'+id+letters[k]+'.jpg';
+    if((LUBE_PHOTOS[id]||[]).indexOf(url)>=0){ next(k+1); return; }
+    const im=new Image();
+    im.onload=()=>{
+      (LUBE_PHOTOS[id]=LUBE_PHOTOS[id]||[]).push(url);
+      if(STEPS[cur].id===id){ renderThumbs(); }
+      next(k+1);
+    };
+    im.onerror=()=>{}; /* первая отсутствующая буква останавливает поиск */
+    im.src=url;
+  })(have);
+}
+function photosOf(s){ return lubeOn ? s.photos.concat(LUBE_PHOTOS[s.id]||[]) : s.photos.slice(); }
 
 const EDIT = new URLSearchParams(location.search).has('edit');
 let lubeOn = false, selMarker = -1, ebOil = '9010', ebQty = QTYS[0];
@@ -852,7 +881,7 @@ function renderLubePanel(){
     r.innerHTML='<span class="lp-dot" style="background:'+oil.color+'">'+(k+1)+'</span>'+
       '<div><span class="lp-oil">'+oil.label+'</span>'+
       (o.p.qty?'<span class="lp-qty"> · '+o.p.qty+'</span>':'')+
-      (s.photos.length>1?'<span class="lp-ph">фото '+(o.p.photo+1)+'</span>':'')+
+      (photosOf(s).length>1?'<span class="lp-ph">'+(o.p.photo>=s.photos.length?'💧 кадр '+(o.p.photo-s.photos.length+1):'фото '+(o.p.photo+1))+'</span>':'')+
       (o.p.note?'<div class="lp-note">'+o.p.note+'</div>':'')+'</div>';
     r.onclick=()=>{
       if(o.p.photo!==curPhoto) setPhoto(o.p.photo);
@@ -973,7 +1002,9 @@ function setLube(on){
   document.body.classList.toggle('lube-on', lubeOn);
   const b=document.getElementById('lubebtn');
   b.classList.toggle('on', lubeOn); b.setAttribute('aria-pressed', lubeOn);
-  renderSpine(); renderMarkers();
+  if(lubeOn) probeLube(STEPS[cur].id);
+  if(curPhoto>=photosOf(STEPS[cur]).length) curPhoto=0;
+  renderSpine(); renderThumbs(); setPhoto(curPhoto); renderLubePanel();
 }
 
 function navStep(dir){
@@ -1047,19 +1078,10 @@ function renderStep(){
   curPhoto = 0;
   selMarker = -1;
   const ebd=document.getElementById('eb-del'); if(ebd) ebd.disabled=true;
+  if(lubeOn) probeLube(s.id);
   setPhoto(0);
   renderLubePanel();
-  // thumbs
-  const th=$('#st-thumbs'); th.innerHTML='';
-  if(s.photos.length>1){
-    s.photos.forEach((p,i)=>{
-      const t=document.createElement('button');
-      t.className='thumb'+(i===0?' sel':'');
-      t.innerHTML=`<img src="${p}" alt="">`;
-      t.onclick=()=>setPhoto(i);
-      th.appendChild(t);
-    });
-  }
+  renderThumbs();
   // parts
   const pl=$('#pt-list'); pl.innerHTML='';
   $('#pt-count').textContent = s.parts.length? s.parts.length+' поз.':'';
@@ -1093,9 +1115,24 @@ function renderStep(){
   $('#next').disabled = cur===STEPS.length-1;
   renderSpine();
 }
+function renderThumbs(){
+  const s=STEPS[cur], ph=photosOf(s);
+  const th=$('#st-thumbs'); th.innerHTML='';
+  if(ph.length>1){
+    ph.forEach((p,i)=>{
+      const t=document.createElement('button');
+      t.className='thumb'+(i===curPhoto?' sel':'')+(i>=s.photos.length?' lth':'');
+      t.innerHTML=`<img src="${p}" alt="">`+(i>=s.photos.length?'<span class="ld">💧</span>':'');
+      t.onclick=()=>setPhoto(i);
+      th.appendChild(t);
+    });
+  }
+}
 function setPhoto(i){
+  const ph=photosOf(STEPS[cur]);
+  if(i>=ph.length) i=0;
   curPhoto=i;
-  $('#st-main').src = STEPS[cur].photos[i];
+  $('#st-main').src = ph[i];
   document.querySelectorAll('.thumb').forEach((t,k)=>t.classList.toggle('sel',k===i));
   renderMarkers();
 }
