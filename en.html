@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rolex 3135 · Assembly</title>
+<style>
+  :root{
+    --bg:#e9ebee; --surface:#f6f7f8; --panel:#ffffff;
+    --ink:#191c20; --ink2:#586069; --ink3:#8a929b;
+    --line:#d4d9de; --line2:#e5e9ed;
+    --ruby:#a8323f; --ruby-soft:#f4e2e4; --brass:#9a7b3f;
+    --mono:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--sans);color:var(--ink);background:var(--bg);
+    -webkit-font-smoothing:antialiased;line-height:1.45;
+  }
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:20;background:var(--panel);
+    border-bottom:1px solid var(--line);
+    box-shadow:0 1px 0 #fff inset, 0 2px 6px rgba(20,25,30,.04);
+  }
+  .hbar{
+    display:flex;align-items:center;gap:14px;
+    max-width:1240px;margin:0 auto;padding:12px 20px;
+  }
+  .brand{display:flex;flex-direction:column;line-height:1.1}
+  .brand .k{
+    font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ruby);font-weight:600;
+  }
+  .brand .t{font-size:17px;font-weight:650;letter-spacing:-.01em}
+  .hcount{
+    margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--ink2);
+    border:1px solid var(--line);border-radius:100px;padding:5px 12px;background:var(--surface);
+    white-space:nowrap;
+  }
+  .hcount b{color:var(--ink);font-weight:650}
+  header::after{content:"";display:block;height:2px;background:linear-gradient(90deg,var(--ruby) 0 34%,transparent 34%)}
+
+  /* ---------- layout ---------- */
+  .wrap{max-width:1240px;margin:0 auto;padding:20px;display:grid;
+    grid-template-columns:250px minmax(0,1fr) 320px;gap:20px;align-items:start}
+
+  /* ---------- assembly spine ---------- */
+  .spine{position:sticky;top:78px}
+  .spine .cap{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink3);padding:0 4px 10px}
+  .node{
+    display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:10px;
+    width:100%;text-align:left;background:none;border:0;cursor:pointer;
+    padding:9px 10px;border-radius:8px;color:var(--ink);font-family:var(--sans);
+    position:relative;
+  }
+  .node + .node{margin-top:1px}
+  .node .num{
+    font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink3);
+    width:26px;height:26px;display:grid;place-items:center;
+    border:1px solid var(--line);border-radius:50%;background:var(--panel);
+  }
+  .node .lbl{font-size:13.5px;font-weight:500;letter-spacing:-.005em}
+  .node .cnt{font-family:var(--mono);font-size:11px;color:var(--ink3)}
+  .node:hover{background:var(--surface)}
+  .node.empty{color:var(--ink3);cursor:default}
+  .node.empty:hover{background:none}
+  .node.active{background:var(--panel);box-shadow:0 0 0 1px var(--line),0 4px 14px rgba(20,25,30,.06)}
+  .node.active .num{background:var(--ruby);border-color:var(--ruby);color:#fff}
+  .node.active .lbl{font-weight:650}
+  .node.active .cnt{color:var(--ruby)}
+  .node.done .num{border-color:var(--ruby);color:var(--ruby)}
+
+  /* ---------- stage (photo) ---------- */
+  .stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .stage .meta{padding:16px 18px 14px;border-bottom:1px solid var(--line2)}
+  .stage .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ruby);font-weight:600;margin-bottom:5px}
+  .stage h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
+  .photowrap{background:
+      radial-gradient(120% 120% at 50% 0,#fbfbfc 0,#eef0f2 100%);
+    display:grid;place-items:center;padding:18px}
+  .photowrap img.main{
+    max-width:100%;max-height:min(62vh,560px);border-radius:8px;cursor:zoom-in;
+    box-shadow:0 8px 30px rgba(20,25,30,.14);background:#fff}
+  .thumbs{display:flex;gap:8px;padding:0 18px 16px;flex-wrap:wrap}
+  .thumb{width:56px;height:56px;border-radius:7px;overflow:hidden;border:1px solid var(--line);
+    cursor:pointer;padding:0;background:#fff}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .thumb.sel{border-color:var(--ruby);box-shadow:0 0 0 2px var(--ruby-soft)}
+  .thumb{position:relative}
+  .thumb .ld{position:absolute;top:1px;right:1px;font-size:11px;line-height:1;
+    background:rgba(255,255,255,.85);border-radius:5px;padding:1px 2px}
+
+  /* ---------- parts panel ---------- */
+  .parts{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);position:sticky;top:78px}
+  .parts .head{padding:14px 16px 12px;border-bottom:1px solid var(--line2);display:flex;align-items:baseline;gap:8px}
+  .parts .head .h{font-size:13px;font-weight:650;letter-spacing:-.005em}
+  .parts .head .c{font-family:var(--mono);font-size:11px;color:var(--ink3);margin-left:auto}
+  .plist{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+  .part{display:grid;grid-template-columns:48px 1fr;gap:11px;align-items:center;
+    padding:9px 10px;border:1px solid var(--line2);border-radius:9px;background:var(--surface)}
+  .part .pic{width:48px;height:48px;border-radius:7px;overflow:hidden;border:1px solid var(--line);
+    background:#fff;display:grid;place-items:center;cursor:zoom-in}
+  .part .pic img{width:100%;height:100%;object-fit:cover}
+  .part .pic.none{font-family:var(--mono);font-size:9px;color:var(--ink3);cursor:default;text-align:center;line-height:1.2;padding:2px}
+  .part .body{min-width:0}
+  .part .ref{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--ink2);
+    background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-bottom:3px}
+  .part .qty{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--ruby);margin-left:5px}
+  .part .en{font-size:13px;line-height:1.25;color:var(--ink);font-weight:600;letter-spacing:-.005em}
+  .part .ru{display:block;font-size:12px;color:var(--ink2);margin-top:1px}
+  .note{margin:2px 12px 14px;font-size:12px;color:var(--ink2);border-left:2px solid var(--ruby);
+    padding:6px 10px;background:var(--ruby-soft);border-radius:0 6px 6px 0}
+  .empty-parts{padding:22px 14px;text-align:center;color:var(--ink3);font-size:13px}
+
+  /* ---------- footer nav ---------- */
+  .navbar{grid-column:2/4;display:flex;align-items:center;gap:12px;margin-top:2px}
+  .nbtn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:14px;font-weight:550;
+    color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:9px;
+    padding:11px 16px;cursor:pointer}
+  .nbtn:hover:not(:disabled){border-color:var(--ink3)}
+  .nbtn:disabled{opacity:.4;cursor:default}
+  .nbtn.prim{margin-left:auto;background:var(--ink);color:#fff;border-color:var(--ink)}
+  .nbtn.prim:hover:not(:disabled){background:#000}
+  .stepcount{font-family:var(--mono);font-size:12px;color:var(--ink2)}
+
+  /* ---------- lightbox ---------- */
+  .lb{position:fixed;inset:0;background:rgba(16,19,22,.86);display:none;place-items:center;z-index:80;padding:24px;cursor:zoom-out}
+  .lb.on{display:grid}
+  .lb img{max-width:96vw;max-height:92vh;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .wrap{grid-template-columns:1fr;gap:14px;padding:14px}
+    .spine{position:static;order:3}
+    .parts{position:static;order:2}
+    .stage{order:1}
+    .navbar{grid-column:1;order:0;position:sticky;top:70px;z-index:10;
+      background:var(--bg);padding:8px 0;margin:0 -14px 0;padding-left:14px;padding-right:14px}
+    .spine{border-top:1px solid var(--line);padding-top:14px}
+    .spine .nodes{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+    .photowrap img.main{max-height:52vh}
+  }
+  @media (max-width:520px){
+    .spine .nodes{grid-template-columns:1fr}
+    .hbar{padding:10px 14px}
+    .brand .t{font-size:15px}
+  }
+
+  /* ---------- lubrication mode ---------- */
+  .langbtn{font-family:var(--mono);font-size:12px;font-weight:600;border:1px solid var(--line);
+    border-radius:100px;padding:5px 11px;background:var(--surface);color:var(--ink2);
+    text-decoration:none;white-space:nowrap}
+  .langbtn:hover{border-color:var(--ink3)}
+  .lubebtn{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:100px;
+    padding:5px 12px;background:var(--surface);cursor:pointer;color:var(--ink2);white-space:nowrap}
+  .lubebtn.on{background:var(--ruby);border-color:var(--ruby);color:#fff}
+  .imgbox{position:relative;display:inline-block;line-height:0}
+  .imgbox img.main{display:block}
+  .mlayer{position:absolute;inset:0;pointer-events:none;display:none}
+  body.lube-on .mlayer{display:block}
+  body.edit .mlayer{display:block;pointer-events:auto;cursor:crosshair}
+  .marker{position:absolute;width:24px;height:50px;
+    transform:translate(-50%,-100%) rotate(-30deg);transform-origin:50% 100%;
+    pointer-events:auto;cursor:pointer;user-select:none;touch-action:none;
+    filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+  .marker svg{width:100%;height:100%;display:block;overflow:visible}
+  .marker svg .body{stroke:#fff;stroke-width:1.6}
+  .marker .mn{position:absolute;top:1px;left:0;width:100%;height:22px;display:grid;place-items:center;
+    color:#fff;font:600 11px/1 var(--mono);transform:rotate(30deg)}
+  .marker.flip{transform:translate(-50%,-100%) rotate(30deg)}
+  .marker.flip .mn{transform:rotate(-30deg)}
+  .marker.sel{filter:drop-shadow(0 0 5px #ffd24d) drop-shadow(0 1px 3px rgba(0,0,0,.4))}
+  .marker.sel svg .body{stroke:#ffd24d}
+  @keyframes mpulse{0%,100%{filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}50%{filter:drop-shadow(0 0 9px #ffd24d)}}
+  .marker.pulse{animation:mpulse .75s ease 2}
+
+  .lubepanel{display:none;border-top:1px solid var(--line2);padding:14px 18px;background:var(--panel)}
+  body.lube-on .lubepanel{display:block}
+  .lp-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  .lp-title{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ruby);font-weight:600}
+  .lp-filter{margin-left:auto;font-size:12px;color:var(--ink2);display:flex;gap:6px;align-items:center;cursor:pointer;user-select:none}
+  .lp-row{display:flex;gap:10px;align-items:flex-start;padding:7px 8px;border-radius:8px;cursor:pointer}
+  .lp-row:hover{background:var(--surface)}
+  .lp-row.hl{background:var(--ruby-soft)}
+  .lp-dot{width:17px;height:17px;border-radius:50%;flex:none;margin-top:1px;border:2px solid #fff;
+    box-shadow:0 0 0 1px var(--line);display:grid;place-items:center;color:#fff;font:600 9px/1 var(--mono)}
+  .lp-oil{font-family:var(--mono);font-size:12.5px;font-weight:650}
+  .lp-qty{font-size:12px;color:var(--ink2)}
+  .lp-note{font-size:12px;color:var(--ink2)}
+  .lp-ph{font-family:var(--mono);font-size:10px;color:var(--ink3);border:1px solid var(--line);border-radius:4px;padding:1px 5px;margin-left:6px}
+  .lp-empty{font-size:13px;color:var(--ink3);padding:4px 2px}
+  .lp-legend{margin-top:8px;font-size:12px;color:var(--ink2)}
+  .lp-legend summary{cursor:pointer;font-family:var(--mono);font-size:11px;color:var(--ink3)}
+  .lgrid{display:flex;flex-direction:column;gap:6px;padding-top:8px}
+  .litem{display:flex;align-items:center;gap:8px}
+  .lp-src{margin-top:10px;font-size:11px;color:var(--ink3);font-family:var(--mono)}
+
+  .editbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:70;background:#1b1f24;color:#e8eaed;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(0,0,0,.35)}
+  body.edit .editbar{display:block}
+  body.edit{padding-bottom:190px}
+  .eb-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+  .oilchip{border:1px solid #3a4048;border-radius:100px;padding:5px 10px;background:#262b31;color:#cfd3d8;
+    font:600 11.5px var(--mono);cursor:pointer;display:flex;gap:6px;align-items:center}
+  .oilchip .d{width:12px;height:12px;border-radius:50%}
+  .oilchip.on{border-color:#ffd24d;color:#fff;background:#30363d}
+  .eb-row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .eb-row2 select,.eb-row2 input{background:#262b31;border:1px solid #3a4048;color:#e8eaed;border-radius:8px;padding:7px 9px;font-size:13px}
+  #eb-note{flex:1;min-width:130px}
+  .ebtn{border:1px solid #3a4048;background:#262b31;color:#e8eaed;border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer}
+  .ebtn.prim{background:var(--ruby);border-color:var(--ruby);color:#fff}
+  .ebtn.danger{color:#ff8a8a}
+  .ebtn:disabled{opacity:.4;cursor:default}
+  .eb-hint{font-size:11px;color:#9aa2ab;margin-top:7px}
+  .exportov{display:none;position:fixed;inset:0;z-index:90;background:rgba(10,12,14,.7);padding:20px;place-items:center}
+  .exportov.on{display:grid}
+  .exbox{background:#fff;border-radius:12px;max-width:720px;width:100%;padding:16px;display:flex;flex-direction:column;gap:10px}
+  .exhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .exhead b{font-size:13px}
+  .exbox .ebtn{background:var(--surface);color:var(--ink);border-color:var(--line)}
+  .exbox .ebtn.prim{background:var(--ruby);border-color:var(--ruby);color:#fff}
+  #ex-ta{width:100%;height:300px;font:12px var(--mono);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre}
+  .exfoot{display:flex;gap:8px;justify-content:flex-end}
+</style>
+</head>
+<body>
+<header>
+  <div class="hbar">
+    <div class="brand">
+      <span class="k">Rolex · Calibre 3135</span>
+      <span class="t">Assembly Trainer</span>
+    </div>
+    <div class="hcount">Step <b id="hc-cur">1</b> / <span id="hc-tot">1</span></div>
+    <button class="lubebtn" id="lubebtn" aria-pressed="false">💧 Lubrication</button>
+    <a class="langbtn" id="langbtn" href="index.html">RU</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- assembly spine -->
+  <nav class="spine">
+    <div class="cap">Assembly sequence</div>
+    <div class="nodes" id="nodes"></div>
+  </nav>
+
+  <!-- stage -->
+  <section class="stage">
+    <div class="meta">
+      <div class="eyebrow" id="st-node">Unit</div>
+      <h1 id="st-title">—</h1>
+    </div>
+    <div class="photowrap"><div class="imgbox"><img class="main" id="st-main" alt=""><div class="mlayer" id="mlayer"></div></div></div>
+    <div class="thumbs" id="st-thumbs"></div>
+    <div class="lubepanel" id="lubepanel">
+      <div class="lp-head">
+        <span class="lp-title">Lubrication in this step</span>
+        <label class="lp-filter"><input type="checkbox" id="lubefilter"> lubrication steps only</label>
+      </div>
+      <div class="lp-list" id="lp-list"></div>
+      <details class="lp-legend"><summary>Oil legend</summary><div id="lp-legend"></div></details>
+      <div class="lp-src">Source: Rolex Tech. Info. No. 25-1 · point mapping by Roman (master watchmaker)</div>
+    </div>
+  </section>
+
+  <!-- parts -->
+  <aside class="parts">
+    <div class="head"><span class="h">Parts in this step</span><span class="c" id="pt-count"></span></div>
+    <div class="plist" id="pt-list"></div>
+    <div class="note" id="pt-note" style="display:none"></div>
+  </aside>
+
+  <!-- nav -->
+  <div class="navbar">
+    <button class="nbtn" id="prev">← Back</button>
+    <span class="stepcount" id="scount"></span>
+    <button class="nbtn prim" id="next">Next →</button>
+  </div>
+</div>
+
+<div class="editbar" id="editbar">
+  <div class="eb-row" id="eb-oils"></div>
+  <div class="eb-row2">
+    <select id="eb-qty"></select>
+    <input id="eb-note" placeholder="note (optional)">
+    <button id="eb-flip" class="ebtn" disabled>⇋ Mirror</button>
+    <button id="eb-del" class="ebtn danger" disabled>Delete</button>
+    <button id="eb-export" class="ebtn prim">Export</button>
+    <button id="eb-import" class="ebtn">Import</button>
+  </div>
+  <div class="eb-hint" id="eb-files"></div>
+  <div class="eb-hint">Tap the photo to add a point · tap a point to select it · drag to move · picking an oil/quantity while a point is selected updates it</div>
+</div>
+<div class="exportov" id="exportov"><div class="exbox">
+  <div class="exhead"><b id="ex-title">Export</b><button id="ex-close" class="ebtn">Close</button></div>
+  <textarea id="ex-ta" spellcheck="false"></textarea>
+  <div class="exfoot"><button id="ex-copy" class="ebtn prim">Copy</button><button id="ex-apply" class="ebtn" style="display:none">Apply import</button></div>
+</div></div>
+
+<div class="lb" id="lb"><img id="lb-img" alt=""></div>
+
+<script>
+/* ====== assembly structure ====== */
+const NODES = [
+  {id:'plate',        n:'0', title:'Main plate'},
+  {id:'train',        n:'1', title:'Gear train'},
+  {id:'barrel',       n:'2', title:'Barrel + bridge'},
+  {id:'windingBridge',n:'3', title:'Winding bridge'},
+  {id:'pallet',       n:'4', title:'Pallet fork'},
+  {id:'balance',      n:'5', title:'Balance'},
+  {id:'keyless',      n:'6', title:'Winding & setting mechanism'},
+  {id:'calendar',     n:'7', title:'Calendar'},
+  {id:'auto',         n:'8', title:'Automatic module'},
+];
+
+/* base64 images */
+const IMG1 = "img/steps/IMG1.jpg";
+
+const IMG2 = "img/steps/IMG2.jpg";
+
+const IMG3 = "img/steps/IMG3.jpg";
+
+const IMG4 = "img/steps/IMG4.jpg";
+
+const IMG5 = "img/steps/IMG5.jpg";
+
+const IMG6 = "img/steps/IMG6.jpg";
+
+const IMG7 = "img/steps/IMG7.jpg";
+
+const IMG8 = "img/steps/IMG8.jpg";
+
+const IMG9 = "img/steps/IMG9.jpg";
+
+const IMG10 = "img/steps/IMG10.jpg";
+
+const IMG11 = "img/steps/IMG11.jpg";
+
+const IMG12 = "img/steps/IMG12.jpg";
+
+const IMG13A = "img/steps/IMG13A.jpg";
+const IMG13B = "img/steps/IMG13B.jpg";
+
+const IMG14 = "img/steps/IMG14.jpg";
+
+const IMG15 = "img/steps/IMG15.jpg";
+
+const IMG16 = "img/steps/IMG16.jpg";
+
+const IMG17 = "img/steps/IMG17.jpg";
+
+const IMG18A = "img/steps/IMG18A.jpg";
+const IMG18B = "img/steps/IMG18B.jpg";
+const IMG18C = "img/steps/IMG18C.jpg";
+const IMG18D = "img/steps/IMG18D.jpg";
+
+const IMG19 = "img/steps/IMG19.jpg";
+
+const IMG20 = "img/steps/IMG20.jpg";
+
+const IMG21 = "img/steps/IMG21.jpg";
+
+const IMG22 = "img/steps/IMG22.jpg";
+
+const IMG23 = "img/steps/IMG23.jpg";
+
+const IMG24 = "img/steps/IMG24.jpg";
+
+const IMG25 = "img/steps/IMG25.jpg";
+
+const IMG26 = "img/steps/IMG26.jpg";
+
+const IMG27 = "img/steps/IMG27.jpg";
+
+const IMG28 = "img/steps/IMG28.jpg";
+
+const IMG29 = "img/steps/IMG29.jpg";
+
+const IMG30 = "img/steps/IMG30.jpg";
+
+const IMG31 = "img/steps/IMG31.jpg";
+
+const IMG32 = "img/steps/IMG32.jpg";
+
+const IMG33 = "img/steps/IMG33.jpg";
+
+const IMG34 = "img/steps/IMG34.jpg";
+
+const IMG35 = "img/steps/IMG35.jpg";
+
+const IMG36 = "img/steps/IMG36.jpg";
+
+const IMG37 = "img/steps/IMG37.jpg";
+
+const IMG38 = "img/steps/IMG38.jpg";
+
+const IMG39A = "img/steps/IMG39A.jpg";
+const IMG39B = "img/steps/IMG39B.jpg";
+const IMG39C = "img/steps/IMG39C.jpg";
+const IMG39D = "img/steps/IMG39D.jpg";
+const IMG39E = "img/steps/IMG39E.jpg";
+
+const IMG40 = "img/steps/IMG40.jpg";
+
+const PART_IMG = {"3135-100": "img/parts/3135-100.jpg", "3135-335": "img/parts/3135-335.jpg", "3135-125": "img/parts/3135-125.jpg", "3135-5115": "img/parts/3135-5115.jpg", "3135-330": "img/parts/3135-330.jpg", "3135-340": "img/parts/3135-340.jpg", "3135-360": "img/parts/3135-360.jpg", "3135-410": "img/parts/3135-410.jpg", "3135-110": "img/parts/3135-110.jpg", "3135-5110": "img/parts/3135-5110.jpg", "3135-310": "img/parts/3135-310.jpg", "3135-105": "img/parts/3135-105.jpg", "3135-305": "img/parts/3135-305.jpg", "3135-5210": "img/parts/3135-5210.jpg", "3135-212": "img/parts/3135-212.jpg", "3135-213": "img/parts/3135-213.jpg", "3135-217": "img/parts/3135-217.jpg", "3135-5213": "img/parts/3135-5213.jpg", "3135-245": "img/parts/3135-245.jpg", "3135-130": "img/parts/3135-130.jpg", "3135-211": "img/parts/3135-211.jpg", "3135-210": "img/parts/3135-210.jpg", "3135-421": "img/parts/3135-421.jpg", "3135-115": "img/parts/3135-115.jpg", "3135-432": "img/parts/3135-432.jpg", "3135-120": "img/parts/3135-120.jpg", "3135-307": "img/parts/3135-307.jpg", "3135-311": "img/parts/3135-311.jpg", "3135-270": "img/parts/3135-270.jpg", "3135-205": "img/parts/3135-205.jpg", "3135-204": "img/parts/3135-204.jpg", "3135-201": "img/parts/3135-201.jpg", "3135-240": "img/parts/3135-240.jpg", "3135-241": "img/parts/3135-241.jpg", "3135-266": "img/parts/3135-266.jpg", "3135-220": "img/parts/3135-220.jpg", "3135-225": "img/parts/3135-225.jpg", "3135-260": "img/parts/3135-260.jpg", "3135-250": "img/parts/3135-250.jpg", "3135-230": "img/parts/3135-230.jpg", "3135-268": "img/parts/3135-268.jpg", "3135-625": "img/parts/3135-625.jpg", "3135-635": "img/parts/3135-635.jpg", "3135-633": "img/parts/3135-633.jpg", "3135-9633": "img/parts/3135-9633.jpg", "3135-623": "img/parts/3135-623.jpg", "3135-5625": "img/parts/3135-5625.jpg", "3135-639": "img/parts/3135-639.jpg", "3135-645": "img/parts/3135-645.jpg", "3135-280": "img/parts/3135-280.jpg", "3135-670": "img/parts/3135-670.jpg", "3135-600": "img/parts/3135-600.jpg", "3135-16100": "img/parts/3135-16100.jpg", "3135-570": "img/parts/3135-570.jpg", "3135-568": "img/parts/3135-568.jpg", "3135-561": "img/parts/3135-561.jpg", "3135-560": "img/parts/3135-560.jpg", "3135-550": "img/parts/3135-550.jpg", "3135-540": "img/parts/3135-540.jpg", "3135-510": "img/parts/3135-510.jpg", "3135-140": "img/parts/3135-140.jpg", "3135-135": "img/parts/3135-135.jpg", "3135-560-1/-2/-3": "img/parts/3135-560-1_-2_-3.jpg"};
+
+/* steps — extended as new photos and lists arrive */
+const STEPS = [
+  {
+    id:1, node:'plate',
+    title:'Main plate in the movement holder',
+    photos:[IMG1],
+    parts:[
+      {ref:'3135-100', en:'', ru:'Main plate'},
+    ],
+    note:''
+  },
+  {
+    id:2, node:'plate',
+    title:'Friction assembly (minute pinion)',
+    photos:[IMG2],
+    parts:[
+      {ref:'3135-335', en:'', ru:'Minute pinion with cannon pinion'},
+    ],
+    note:'The part location on the main plate is marked in blue.'
+  },
+  {
+    id:3, node:'plate',
+    title:'Minute pinion bridge',
+    photos:[IMG3],
+    parts:[
+      {ref:'3135-125', en:'', ru:'Minute pinion bridge'},
+      {ref:'3135-5115', en:'', ru:'Screw', qty:2},
+    ],
+    note:'The unit location is marked in blue. The bridge is secured with two 3135-5115 screws.'
+  },
+  {
+    id:4, node:'train',
+    title:'Gear train',
+    photos:[IMG4],
+    parts:[
+      {ref:'3135-330', en:'', ru:'Great wheel'},
+      {ref:'3135-340', en:'', ru:'Third wheel'},
+      {ref:'3135-360', en:'', ru:'Second wheel'},
+      {ref:'3135-410', en:'', ru:'Escape wheel'},
+    ],
+    note:'The gear train is marked in blue. Wheels are placed before fitting the train wheel bridge.'
+  },
+  {
+    id:5, node:'train',
+    title:'Train wheel bridge',
+    photos:[IMG5],
+    parts:[
+      {ref:'3135-110', en:'', ru:'Train wheel bridge'},
+      {ref:'3135-5110', en:'', ru:'Screw', qty:3},
+    ],
+    note:'The train wheel bridge is marked in blue. Secured with three 3135-5110 screws.'
+  },
+  {
+    id:6, node:'barrel',
+    title:'Barrel assembly (winding the mainspring)',
+    photos:[IMG18A, IMG18B, IMG18C, IMG18D],
+    parts:[
+      {ref:'3135-310', en:'', ru:'Barrel with arbor'},
+      {ref:'3135-307', en:'', ru:'Barrel arbor'},
+      {ref:'3135-311', en:'', ru:'Mainspring, standard strength'},
+    ],
+    note:'Frames 1–4: barrel components, winding the 3135-311 mainspring into the barrel and fitting the 3135-307 arbor — before placing the barrel on the main plate.'
+  },
+  {
+    id:7, node:'barrel',
+    title:'Barrel',
+    photos:[IMG6],
+    parts:[
+      {ref:'3135-310', en:'', ru:'Barrel with arbor'},
+    ],
+    note:'The barrel with mainspring fitted to the main plate is marked in blue.'
+  },
+  {
+    id:8, node:'barrel',
+    title:'Barrel bridge',
+    photos:[IMG7],
+    parts:[
+      {ref:'3135-105', en:'', ru:'Barrel bridge'},
+      {ref:'3135-5110', en:'', ru:'Screw', qty:2},
+    ],
+    note:'The barrel bridge is marked in blue. Secured with two 3135-5110 screws.'
+  },
+  {
+    id:9, node:'barrel',
+    title:'Ratchet wheel',
+    photos:[IMG8],
+    parts:[
+      {ref:'3135-305', en:'', ru:'Ratchet wheel'},
+      {ref:'3135-5210', en:'', ru:'Screw'},
+    ],
+    note:'The ratchet wheel on the arbor square is marked in blue. Secured with the 3135-5210 screw.'
+  },
+  {
+    id:10, node:'barrel',
+    title:'Core for intermediate crown wheel',
+    photos:[IMG9],
+    parts:[
+      {ref:'3135-212', en:'', ru:'Core for intermediate crown wheel'},
+    ],
+    note:'The seat of the intermediate crown wheel core is marked in blue.'
+  },
+  {
+    id:11, node:'barrel',
+    title:'Intermediate crown wheel',
+    photos:[IMG10],
+    parts:[
+      {ref:'3135-213', en:'', ru:'Intermediate crown wheel'},
+    ],
+    note:'The intermediate crown wheel fitted on its core is marked in blue.'
+  },
+  {
+    id:12, node:'barrel',
+    title:'Yoke for sliding gear',
+    photos:[IMG11],
+    parts:[
+      {ref:'3135-217', en:'', ru:'Yoke for sliding gear'},
+      {ref:'3135-5213', en:'', ru:'Screw for intermediate crown wheel'},
+    ],
+    note:'The seating area of the 3135-217 yoke and the 3135-5213 screw (intermediate crown wheel screw) is marked in blue.'
+  },
+  {
+    id:13, node:'barrel',
+    title:'Balance stop spring (hacking)',
+    photos:[IMG12],
+    parts:[
+      {ref:'3135-245', en:'', ru:'Balance stop spring'},
+    ],
+    note:'The balance stop spring (hacking lever) is marked in blue — the gilt lever near the setting lever cut-out.'
+  },
+  {
+    id:14, node:'windingBridge',
+    title:'Winding bridge (assembled)',
+    photos:[IMG13A, IMG13B],
+    parts:[
+      {ref:'3135-130', en:'', ru:'Winding bridge'},
+      {ref:'3135-211', en:'', ru:'Crown wheel core'},
+      {ref:'3135-210', en:'', ru:'Crown wheel'},
+      {ref:'3135-5210', en:'', ru:'Screw'},
+    ],
+    note:'Frame 1 — unit components; frame 2 — the assembled bridge with crown wheel. The crown wheel is secured with the 3135-5210 screw.'
+  },
+  {
+    id:15, node:'windingBridge',
+    title:'Fitting the winding bridge to the main plate',
+    photos:[IMG14],
+    parts:[
+      {ref:'3135-130', en:'', ru:'Winding bridge'},
+    ],
+    note:'The assembled 3135-130 winding bridge fitted to the main plate is marked in blue (the 3135 marking is visible).'
+  },
+  {
+    id:16, node:'pallet',
+    title:'Pallet fork',
+    photos:[IMG15],
+    parts:[
+      {ref:'3135-421', en:'', ru:'Pallet fork'},
+    ],
+    note:'The pallet fork fitted to the main plate is marked in blue.'
+  },
+  {
+    id:17, node:'pallet',
+    title:'Pallet bridge',
+    photos:[IMG16],
+    parts:[
+      {ref:'3135-115', en:'', ru:'Pallet bridge'},
+      {ref:'3135-5115', en:'', ru:'Screw', qty:2},
+    ],
+    note:'The pallet bridge is marked in blue. Secured with two 3135-5115 screws.'
+  },
+  {
+    id:18, node:'balance',
+    title:'Balance assembled',
+    photos:[IMG17],
+    parts:[
+      {ref:'3135-432', en:'', ru:'Balance with Breguet hairspring'},
+      {ref:'3135-120', en:'', ru:'Balance bridge'},
+      {ref:'3135-5110', en:'', ru:'Screw', qty:2},
+    ],
+    note:'The assembled balance is marked in blue. 3135-432 (balance with hairspring) and 3135-120 (balance bridge) usually come as one unit. Secured with two 3135-5110 screws.'
+  },
+  {
+    id:19, node:'keyless',
+    title:'Turn the movement over (dial side)',
+    photos:[IMG19],
+    parts:[],
+    note:'Action: turn the movement over to the dial side to assemble the winding mechanism and calendar.'
+  },
+  {
+    id:20, node:'keyless',
+    title:'Cannon pinion',
+    photos:[IMG20],
+    parts:[
+      {ref:'3135-270', en:'', ru:'Cannon pinion, h. 2.86 mm'},
+    ],
+    note:'The 3135-270 cannon pinion fitted on the centre post, dial side, is marked in blue.'
+  },
+  {
+    id:21, node:'keyless',
+    title:'Winding pinion and sliding pinion',
+    photos:[IMG21],
+    parts:[
+      {ref:'3135-205', en:'', ru:'Sliding pinion'},
+      {ref:'3135-204', en:'', ru:'Winding pinion'},
+    ],
+    note:'The 3135-204 winding pinion and 3135-205 sliding pinion on the winding stem are marked in blue.'
+  },
+  {
+    id:22, node:'keyless',
+    title:'Winding stem',
+    photos:[IMG22],
+    parts:[
+      {ref:'3135-201', en:'', ru:'Winding stem'},
+    ],
+    note:'The 3135-201 winding stem inserted into the winding mechanism is marked in blue.'
+  },
+  {
+    id:23, node:'keyless',
+    title:'Yoke for sliding pinion',
+    photos:[IMG23],
+    parts:[
+      {ref:'3135-240', en:'', ru:'Yoke for sliding pinion'},
+    ],
+    note:'The 3135-240 yoke controlling the sliding pinion is marked in blue.'
+  },
+  {
+    id:24, node:'keyless',
+    title:'Yoke spring',
+    photos:[IMG24],
+    parts:[
+      {ref:'3135-241', en:'', ru:'Spring for yoke'},
+    ],
+    note:'The 3135-241 yoke spring is marked in blue.'
+  },
+  {
+    id:25, node:'keyless',
+    title:'Yoke for setting wheel',
+    photos:[IMG25],
+    parts:[
+      {ref:'3135-266', en:'', ru:'Yoke for setting wheel'},
+    ],
+    note:'The 3135-266 yoke for setting wheel is marked in blue.'
+  },
+  {
+    id:26, node:'keyless',
+    title:'Setting lever',
+    photos:[IMG26],
+    parts:[
+      {ref:'3135-220', en:'', ru:'Setting lever'},
+    ],
+    note:'The 3135-220 setting lever retaining the winding stem is marked in blue.'
+  },
+  {
+    id:27, node:'keyless',
+    title:'Spring for setting lever',
+    photos:[IMG27],
+    parts:[
+      {ref:'3135-225', en:'', ru:'Spring for setting lever'},
+      {ref:'3135-5115', en:'', ru:'Screw'},
+    ],
+    note:'The 3135-225 spring for setting lever, secured with the 3135-5115 screw, is marked in blue.'
+  },
+  {
+    id:28, node:'keyless',
+    title:'Minute wheel and setting wheels',
+    photos:[IMG28],
+    parts:[
+      {ref:'3135-260', en:'', ru:'Minute wheel'},
+      {ref:'3135-250', en:'', ru:'Setting wheel', qty:2},
+    ],
+    note:'The 3135-260 minute wheel and two 3135-250 setting wheels are marked in blue.'
+  },
+  {
+    id:29, node:'keyless',
+    title:'Jumper for setting lever',
+    photos:[IMG29],
+    parts:[
+      {ref:'3135-230', en:'', ru:'Jumper for setting lever'},
+      {ref:'3135-5115', en:'', ru:'Screw'},
+    ],
+    note:'The 3135-230 jumper for setting lever, secured with the 3135-5115 screw, is marked in blue.'
+  },
+  {
+    id:30, node:'keyless',
+    title:'Mechanism cover',
+    photos:[IMG30],
+    parts:[
+      {ref:'3135-268', en:'', ru:'Mechanism cover, mounted'},
+      {ref:'3135-5115', en:'', ru:'Screw', qty:2},
+    ],
+    note:'The 3135-268 mechanism cover enclosing the winding mechanism is marked in blue. Secured with two 3135-5115 screws.'
+  },
+  {
+    id:31, node:'calendar',
+    title:'Date wheel and yoke for cam',
+    photos:[IMG31],
+    parts:[
+      {ref:'3135-625', en:'', ru:'Date wheel, mounted'},
+      {ref:'3135-635', en:'', ru:'Spring for cam yoke'},
+      {ref:'3135-633', en:'', ru:'Yoke for cam'},
+      {ref:'3135-9633', en:'', ru:'Jewel for yoke for cam'},
+    ],
+    note:'The 3135-625 date wheel with the 3135-633 yoke for cam, its 3135-635 spring and 3135-9633 jewel are marked in blue.'
+  },
+  {
+    id:32, node:'calendar',
+    title:'Date finger',
+    photos:[IMG32],
+    parts:[
+      {ref:'3135-623', en:'', ru:'Date finger'},
+      {ref:'3135-5625', en:'', ru:'Screw for date wheel'},
+    ],
+    note:'The 3135-623 date finger, secured with the 3135-5625 screw, is marked in blue.'
+  },
+  {
+    id:33, node:'calendar',
+    title:'Intermediate date corrector wheel',
+    photos:[IMG33],
+    parts:[
+      {ref:'3135-639', en:'', ru:'Intermediate date corrector'},
+    ],
+    note:'The 3135-639 intermediate date corrector wheel is marked in blue.'
+  },
+  {
+    id:34, node:'calendar',
+    title:'Date corrector',
+    photos:[IMG34],
+    parts:[
+      {ref:'3135-645', en:'', ru:'Date corrector'},
+    ],
+    note:'The 3135-645 date corrector (green quick-set star) is marked in blue.'
+  },
+  {
+    id:35, node:'calendar',
+    title:'Hour wheel',
+    photos:[IMG35],
+    parts:[
+      {ref:'3135-280', en:'', ru:'Hour wheel'},
+    ],
+    note:'The 3135-280 hour wheel is marked in blue.'
+  },
+  {
+    id:36, node:'calendar',
+    title:'Intermediate date wheel',
+    photos:[IMG36],
+    parts:[
+      {ref:'3135-670', en:'', ru:'Intermediate date wheel'},
+    ],
+    note:'The 3135-670 intermediate date wheel is marked in blue.'
+  },
+  {
+    id:37, node:'calendar',
+    title:'Date indicator seating',
+    photos:[IMG37],
+    parts:[
+      {ref:'3135-600', en:'', ru:'Date indicator seating'},
+    ],
+    note:'The 3135-600 date indicator seating enclosing the calendar mechanism is marked in blue.'
+  },
+  {
+    id:38, node:'calendar',
+    title:'Date indicator',
+    photos:[IMG38],
+    parts:[
+      {ref:'3135-16100', en:'', ru:'Date disc, champagne'},
+    ],
+    note:'The 3135-16100 date indicator (champagne) is marked in blue. Lock the calendar with the retaining clip near the 13–14 position. Colour options: 16100 champagne, 16200 silver, 16500 pink.'
+  },
+  {
+    id:39, node:'auto',
+    title:'Automatic module (assembled)',
+    photos:[IMG39A, IMG39B, IMG39C, IMG39D, IMG39E],
+    parts:[
+      {ref:'3135-570', en:'', ru:'Oscillating weight'},
+      {ref:'3135-568', en:'', ru:'Axle for oscillating weight'},
+      {ref:'3135-561', en:'', ru:'Bridle for spring-clip'},
+      {ref:'3135-560-1/-2/-3', en:'', ru:'Spring-clip for oscillating weight'},
+      {ref:'3135-550', en:'', ru:'Pinion for oscillating weight'},
+      {ref:'3135-540', en:'', ru:'Reversing wheel, mounted', qty:2},
+      {ref:'3135-510', en:'', ru:'Driving wheel for ratchet wheel'},
+      {ref:'3135-140', en:'', ru:'Automatic device upper bridge'},
+      {ref:'3135-135', en:'', ru:'Automatic device lower bridge'},
+      {ref:'3135-5110', en:'', ru:'Screw', qty:3},
+    ],
+    note:'Frames 1–5: assembling the automatic module — lower/upper bridges, reversing wheels, pinion and rotor. The 3135-560 spring-clip is selected by height (0.18 / 0.165 / 0.195 mm).'
+  },
+  {
+    id:40, node:'auto',
+    title:'Fitting the automatic module to the movement',
+    photos:[IMG40],
+    parts:[
+      {ref:'3135-570', en:'', ru:'Oscillating weight'},
+      {ref:'3135-5110', en:'', ru:'Screw', qty:2},
+    ],
+    note:'The assembled automatic module fitted to the movement is marked in blue. Secured with two 3135-5110 screws. Assembly of calibre 3135 is complete.'
+  },
+];
+
+/* ====== lubrication ====== */
+const OILS = {
+  '9010':  {label:'Moebius 9010',   color:'#d81b3f', desc:'oil, low bearing pressure: escape wheel, balance shock absorbers'},
+  'HP1300':{label:'HP1300',         color:'#1565c0', desc:'oil, high bearing pressure: great, third and second wheel, barrel arbor'},
+  'HP1000':{label:'HP1000',         color:'#7b3fa0', desc:'oil for the automatic winding module'},
+  '9415':  {label:'Moebius 9415',   color:'#2e7d32', desc:'grease for pallet impulse faces and escape wheel teeth (28,800 vph)'},
+  'KT22':  {label:'KT22',           color:'#ef8f00', desc:'friction pairs: winding and setting mechanism'},
+  'FIX':   {label:'Fixodrop',       color:'#00838f', desc:'epilame (ref. 3109): pallets, escape and reversing wheels, second wheel'},
+  'BRAKE': {label:'Klüber 125',color:'#5d4037', desc:'braking grease: barrel wall, mainspring bridle sliding surface'},
+  'none':  {label:'Do not lubricate',   color:'#616161', desc:'deliberately dry point (no friction)'},
+};
+const QTYS = ['1 drop','½ drop','sparingly','per min/max'];
+
+/* LUBE-DATA-START — paste the editor export here (?edit=1) */
+let LUBE = [
+  {
+    "step": 1,
+    "photo": 1,
+    "x": 55.8,
+    "y": 51.4,
+    "oil": "FIX",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 1,
+    "photo": 1,
+    "x": 31.7,
+    "y": 52.2,
+    "oil": "FIX",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 1,
+    "photo": 1,
+    "x": 11.5,
+    "y": 52.7,
+    "oil": "FIX",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 1,
+    "photo": 1,
+    "x": 90.2,
+    "y": 54,
+    "oil": "FIX",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 1,
+    "photo": 1,
+    "x": 75.1,
+    "y": 54.5,
+    "oil": "FIX",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 2,
+    "photo": 1,
+    "x": 45.8,
+    "y": 62.4,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 2,
+    "photo": 1,
+    "x": 45.8,
+    "y": 78.2,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 4,
+    "photo": 1,
+    "x": 53.4,
+    "y": 47.4,
+    "oil": "9010",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 6,
+    "photo": 0,
+    "x": 50.3,
+    "y": 49.1,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 6,
+    "photo": 0,
+    "x": 28.4,
+    "y": 53.3,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 6,
+    "photo": 4,
+    "x": 28.3,
+    "y": 22.1,
+    "oil": "BRAKE",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 6,
+    "photo": 4,
+    "x": 67.6,
+    "y": 59.5,
+    "oil": "BRAKE",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 6,
+    "photo": 4,
+    "x": 16.9,
+    "y": 73.7,
+    "oil": "BRAKE",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 8,
+    "photo": 0,
+    "x": 45.2,
+    "y": 40.9,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 8,
+    "photo": 0,
+    "x": 58.1,
+    "y": 41.7,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 8,
+    "photo": 0,
+    "x": 56.8,
+    "y": 49.1,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 8,
+    "photo": 0,
+    "x": 41.3,
+    "y": 49.3,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 8,
+    "photo": 0,
+    "x": 51.2,
+    "y": 54.7,
+    "oil": "9010",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 8,
+    "photo": 0,
+    "x": 55.3,
+    "y": 59,
+    "oil": "9010",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 8,
+    "photo": 1,
+    "x": 47,
+    "y": 44.6,
+    "oil": "KT22",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 8,
+    "photo": 1,
+    "x": 55.3,
+    "y": 57.4,
+    "oil": "KT22",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 10,
+    "photo": 1,
+    "x": 26.9,
+    "y": 40.8,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 10,
+    "photo": 1,
+    "x": 53,
+    "y": 51.6,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 10,
+    "photo": 1,
+    "x": 37.7,
+    "y": 56.4,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 12,
+    "photo": 0,
+    "x": 33.7,
+    "y": 42.6,
+    "oil": "9010",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 14,
+    "photo": 0,
+    "x": 65,
+    "y": 45.3,
+    "oil": "KT22",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 14,
+    "photo": 0,
+    "x": 77.9,
+    "y": 47,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 14,
+    "photo": 0,
+    "x": 55.4,
+    "y": 47.1,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 14,
+    "photo": 0,
+    "x": 51.6,
+    "y": 48.9,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 17,
+    "photo": 0,
+    "x": 56.9,
+    "y": 63.7,
+    "oil": "9415",
+    "qty": "½ drop",
+    "note": "Every 7th tooth"
+  },
+  {
+    "step": 18,
+    "photo": 0,
+    "x": 51.7,
+    "y": 70.6,
+    "oil": "9010",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 19,
+    "photo": 0,
+    "x": 48,
+    "y": 50.9,
+    "oil": "KT22",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 20,
+    "photo": 0,
+    "x": 54.2,
+    "y": 35.7,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 20,
+    "photo": 0,
+    "x": 39.2,
+    "y": 37.8,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 20,
+    "photo": 0,
+    "x": 41.7,
+    "y": 45.8,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 20,
+    "photo": 0,
+    "x": 71,
+    "y": 48.9,
+    "oil": "KT22",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 20,
+    "photo": 0,
+    "x": 43.9,
+    "y": 55.4,
+    "oil": "9010",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 20,
+    "photo": 0,
+    "x": 50,
+    "y": 66.4,
+    "oil": "9010",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 21,
+    "photo": 1,
+    "x": 42.1,
+    "y": 49.8,
+    "oil": "KT22",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 21,
+    "photo": 1,
+    "x": 59.6,
+    "y": 51.3,
+    "oil": "KT22",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 21,
+    "photo": 1,
+    "x": 48,
+    "y": 61.7,
+    "oil": "KT22",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 21,
+    "photo": 2,
+    "x": 53,
+    "y": 54.5,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 0,
+    "x": 35.6,
+    "y": 47.1,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 0,
+    "x": 59,
+    "y": 50,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 22,
+    "photo": 0,
+    "x": 53.3,
+    "y": 54.6,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 0,
+    "x": 29.9,
+    "y": 57.9,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 0,
+    "x": 68.6,
+    "y": 65.7,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 1,
+    "x": 14.8,
+    "y": 48.6,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 1,
+    "x": 92,
+    "y": 49.4,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 1,
+    "x": 31,
+    "y": 49.5,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 22,
+    "photo": 1,
+    "x": 63.8,
+    "y": 50.1,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": "On all 4 sides"
+  },
+  {
+    "step": 26,
+    "photo": 0,
+    "x": 63.2,
+    "y": 49.5,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 26,
+    "photo": 0,
+    "x": 74.6,
+    "y": 51.4,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 26,
+    "photo": 1,
+    "x": 54.2,
+    "y": 43.1,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": "All around"
+  },
+  {
+    "step": 26,
+    "photo": 1,
+    "x": 51.3,
+    "y": 60.6,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": "All around"
+  },
+  {
+    "step": 29,
+    "photo": 0,
+    "x": 72.5,
+    "y": 57.9,
+    "oil": "KT22",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 31,
+    "photo": 0,
+    "x": 31.5,
+    "y": 46.2,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": "On the pin"
+  },
+  {
+    "step": 35,
+    "photo": 0,
+    "x": 41.2,
+    "y": 52.9,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 37,
+    "photo": 0,
+    "x": 40.7,
+    "y": 52.7,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 38,
+    "photo": 0,
+    "x": 37.4,
+    "y": 60.9,
+    "oil": "HP1300",
+    "qty": "1 drop",
+    "note": "One drop per every 10 date numerals"
+  },
+  {
+    "step": 39,
+    "photo": 0,
+    "x": 26.9,
+    "y": 47.6,
+    "oil": "KT22",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 39,
+    "photo": 0,
+    "x": 47,
+    "y": 69.3,
+    "oil": "FIX",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 39,
+    "photo": 0,
+    "x": 57.8,
+    "y": 69.3,
+    "oil": "FIX",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 39,
+    "photo": 0,
+    "x": 67.4,
+    "y": 70,
+    "oil": "FIX",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 39,
+    "photo": 0,
+    "x": 38.3,
+    "y": 70.8,
+    "oil": "FIX",
+    "qty": "1 drop",
+    "note": ""
+  },
+  {
+    "step": 39,
+    "photo": 1,
+    "x": 29.5,
+    "y": 41.3,
+    "oil": "HP1000",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 39,
+    "photo": 1,
+    "x": 33.7,
+    "y": 45.1,
+    "oil": "HP1000",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 39,
+    "photo": 1,
+    "x": 33.8,
+    "y": 52.1,
+    "oil": "HP1000",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 39,
+    "photo": 1,
+    "x": 55.7,
+    "y": 67.4,
+    "oil": "HP1000",
+    "qty": "1 drop",
+    "note": "In 2 places per wheel, as a thin film"
+  },
+  {
+    "step": 39,
+    "photo": 1,
+    "x": 35.6,
+    "y": 68.4,
+    "oil": "HP1000",
+    "qty": "1 drop",
+    "note": "In 2 places per wheel, as a thin film"
+  },
+  {
+    "step": 39,
+    "photo": 4,
+    "x": 30,
+    "y": 39.3,
+    "oil": "HP1000",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 39,
+    "photo": 4,
+    "x": 34.2,
+    "y": 42.2,
+    "oil": "HP1000",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  },
+  {
+    "step": 39,
+    "photo": 4,
+    "x": 34.1,
+    "y": 50.6,
+    "oil": "HP1000",
+    "qty": "1 drop",
+    "note": "",
+    "flip": true
+  }
+];
+/* LUBE-DATA-END */
+
+/* LUBE-PHOTOS-START — lubrication frames per step. Filled automatically
+   per convention img/lube/L<step><letter>.jpg (consecutive letters: A, B, C…, up to H).
+   Can also be set manually: 18:['img/lube/L18A.jpg','img/lube/L18B.jpg'] */
+const LUBE_PHOTOS = {};
+/* LUBE-PHOTOS-END */
+const LUBE_DIR = 'img/lube/';
+const _probed = {};
+function probeLube(id){
+  if(_probed[id]) return; _probed[id]=true;
+  const letters='ABCDEFGH';
+  const have=(LUBE_PHOTOS[id]||[]).length;
+  (function next(k){
+    if(k>=letters.length) return;
+    const url=LUBE_DIR+'L'+id+letters[k]+'.jpg';
+    if((LUBE_PHOTOS[id]||[]).indexOf(url)>=0){ next(k+1); return; }
+    const im=new Image();
+    im.onload=()=>{
+      (LUBE_PHOTOS[id]=LUBE_PHOTOS[id]||[]).push(url);
+      if(STEPS[cur].id===id){ renderThumbs(); }
+      next(k+1);
+    };
+    im.onerror=()=>{}; /* the first missing letter stops the search */
+    im.src=url;
+  })(have);
+}
+function photosOf(s){ return lubeOn ? s.photos.concat(LUBE_PHOTOS[s.id]||[]) : s.photos.slice(); }
+
+const EDIT = new URLSearchParams(location.search).has('edit');
+let lubeOn = false, selMarker = -1, ebOil = '9010', ebQty = QTYS[0];
+
+function stepLube(stepId){ const out=[]; LUBE.forEach((p,i)=>{ if(p.step===stepId) out.push({p,i}); }); return out; }
+
+function renderMarkers(){
+  const ml = document.getElementById('mlayer'); if(!ml) return; ml.innerHTML='';
+  const s = STEPS[cur];
+  stepLube(s.id).forEach((o,k)=>{
+    if(o.p.photo!==curPhoto) return;
+    const oil = OILS[o.p.oil]||{color:'#888',label:o.p.oil};
+    const m=document.createElement('div');
+    m.className='marker'+(o.p.oil==='none'?' oil-none':'')+(o.p.flip?' flip':'')+(o.i===selMarker?' sel':'');
+    m.style.left=o.p.x+'%'; m.style.top=o.p.y+'%';
+    m.innerHTML='<svg viewBox="0 0 22 46">'+
+      '<path class="body" fill="'+oil.color+'" d="M11,45 C9.5,34 1.5,21 1.5,11 A9.5,9.5 0 1,1 20.5,11 C20.5,21 12.5,34 11,45 Z"/>'+
+      (o.p.oil==='none'?'<path d="M5.5,5.5 L16.5,16.5 M16.5,5.5 L5.5,16.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>':'')+
+      '</svg>'+(o.p.oil==='none'?'':'<span class="mn">'+(k+1)+'</span>');
+    m.title=oil.label+(o.p.qty?' · '+o.p.qty:'');
+    m.dataset.idx=o.i;
+    attachMarkerEvents(m);
+    ml.appendChild(m);
+  });
+}
+
+function renderLubePanel(){
+  const box=document.getElementById('lp-list'); if(!box) return;
+  const s=STEPS[cur]; box.innerHTML='';
+  const pts=stepLube(s.id);
+  if(!pts.length){
+    box.innerHTML='<div class="lp-empty">'+(EDIT?'No points yet — tap the photo to add one.':'No lubrication points mapped for this step.')+'</div>';
+    return;
+  }
+  pts.forEach((o,k)=>{
+    const oil=OILS[o.p.oil]||{label:o.p.oil,color:'#888'};
+    const r=document.createElement('div'); r.className='lp-row'; r.dataset.idx=o.i;
+    r.innerHTML='<span class="lp-dot" style="background:'+oil.color+'">'+(k+1)+'</span>'+
+      '<div><span class="lp-oil">'+oil.label+'</span>'+
+      (o.p.qty?'<span class="lp-qty"> · '+o.p.qty+'</span>':'')+
+      (photosOf(s).length>1?'<span class="lp-ph">'+(o.p.photo>=s.photos.length?'💧 frame '+(o.p.photo-s.photos.length+1):'photo '+(o.p.photo+1))+'</span>':'')+
+      (o.p.note?'<div class="lp-note">'+o.p.note+'</div>':'')+'</div>';
+    r.onclick=()=>{
+      if(o.p.photo!==curPhoto) setPhoto(o.p.photo);
+      if(EDIT){ selMarker=o.i; loadMarkerToBar(); }
+      renderMarkers();
+      const m=document.querySelector('.marker[data-idx="'+o.i+'"]');
+      if(m){ m.classList.add('pulse'); setTimeout(()=>m.classList.remove('pulse'),1600); }
+    };
+    box.appendChild(r);
+  });
+}
+
+function hlRow(idx){
+  document.querySelectorAll('.lp-row').forEach(r=>r.classList.toggle('hl',+r.dataset.idx===idx));
+  const r=document.querySelector('.lp-row[data-idx="'+idx+'"]');
+  if(r) r.scrollIntoView({block:'nearest',behavior:'smooth'});
+  setTimeout(()=>document.querySelectorAll('.lp-row.hl').forEach(x=>x.classList.remove('hl')),1600);
+}
+
+function attachMarkerEvents(m){
+  if(!EDIT){ m.onclick=e=>{ e.stopPropagation(); hlRow(+m.dataset.idx); }; return; }
+  m.addEventListener('pointerdown',e=>{
+    e.stopPropagation(); e.preventDefault();
+    const idx=+m.dataset.idx;
+    selMarker=idx; loadMarkerToBar();
+    document.querySelectorAll('.marker').forEach(x=>x.classList.toggle('sel',x===m));
+    m.setPointerCapture(e.pointerId);
+    const r=document.getElementById('mlayer').getBoundingClientRect();
+    let moved=false; const sx=e.clientX, sy=e.clientY;
+    const move=ev=>{
+      if(Math.abs(ev.clientX-sx)+Math.abs(ev.clientY-sy)>4) moved=true;
+      if(!moved) return;
+      LUBE[idx].x=+Math.min(100,Math.max(0,(ev.clientX-r.left)/r.width*100)).toFixed(1);
+      LUBE[idx].y=+Math.min(100,Math.max(0,(ev.clientY-r.top)/r.height*100)).toFixed(1);
+      m.style.left=LUBE[idx].x+'%'; m.style.top=LUBE[idx].y+'%';
+    };
+    const up=()=>{ m.removeEventListener('pointermove',move); m.removeEventListener('pointerup',up); if(moved){ saveDraft(); renderLubePanel(); } };
+    m.addEventListener('pointermove',move);
+    m.addEventListener('pointerup',up);
+  });
+}
+
+function loadMarkerToBar(){
+  const p=LUBE[selMarker]; if(!p) return;
+  ebOil=p.oil; ebQty=p.qty||QTYS[0];
+  document.querySelectorAll('.oilchip').forEach(x=>x.classList.toggle('on',x.dataset.oil===p.oil));
+  const q=document.getElementById('eb-qty'); if(q) q.value=ebQty;
+  document.getElementById('eb-note').value=p.note||'';
+  document.getElementById('eb-del').disabled=false;
+  document.getElementById('eb-flip').disabled=false;
+}
+
+function buildEditbar(){
+  const row=document.getElementById('eb-oils');
+  Object.keys(OILS).forEach(k=>{
+    const o=OILS[k];
+    const c=document.createElement('button'); c.className='oilchip'+(k===ebOil?' on':''); c.dataset.oil=k;
+    c.innerHTML='<span class="d" style="background:'+o.color+'"></span>'+o.label;
+    c.onclick=()=>{
+      ebOil=k;
+      document.querySelectorAll('.oilchip').forEach(x=>x.classList.toggle('on',x===c));
+      if(selMarker>=0&&LUBE[selMarker]){ LUBE[selMarker].oil=k; renderMarkers(); renderLubePanel(); saveDraft(); }
+    };
+    row.appendChild(c);
+  });
+  const q=document.getElementById('eb-qty');
+  QTYS.forEach(v=>{ const op=document.createElement('option'); op.value=v; op.textContent=v; q.appendChild(op); });
+  q.onchange=()=>{ ebQty=q.value; if(selMarker>=0&&LUBE[selMarker]){ LUBE[selMarker].qty=ebQty; renderLubePanel(); saveDraft(); } };
+  document.getElementById('eb-note').onchange=()=>{ if(selMarker>=0&&LUBE[selMarker]){ LUBE[selMarker].note=document.getElementById('eb-note').value.trim(); renderLubePanel(); saveDraft(); } };
+  document.getElementById('eb-flip').onclick=()=>{
+    if(selMarker<0||!LUBE[selMarker]) return;
+    LUBE[selMarker].flip=!LUBE[selMarker].flip;
+    if(!LUBE[selMarker].flip) delete LUBE[selMarker].flip;
+    renderMarkers(); saveDraft();
+  };
+  document.getElementById('eb-del').onclick=()=>{
+    if(selMarker<0) return;
+    LUBE.splice(selMarker,1); selMarker=-1;
+    document.getElementById('eb-del').disabled=true;
+    document.getElementById('eb-flip').disabled=true;
+    renderMarkers(); renderLubePanel(); renderSpine(); saveDraft();
+  };
+  document.getElementById('eb-export').onclick=openExport;
+  document.getElementById('eb-import').onclick=openImport;
+  document.getElementById('mlayer').addEventListener('click',e=>{
+    if(e.target!==e.currentTarget) return;
+    const r=e.currentTarget.getBoundingClientRect();
+    const x=+((e.clientX-r.left)/r.width*100).toFixed(1);
+    const y=+((e.clientY-r.top)/r.height*100).toFixed(1);
+    LUBE.push({step:STEPS[cur].id, photo:curPhoto, x:x, y:y, oil:ebOil, qty:ebQty, note:document.getElementById('eb-note').value.trim()});
+    selMarker=LUBE.length-1;
+    document.getElementById('eb-del').disabled=false;
+    document.getElementById('eb-flip').disabled=false;
+    renderMarkers(); renderLubePanel(); renderSpine(); saveDraft();
+  });
+}
+
+function lubeJSON(){
+  const arr=LUBE.slice().sort((a,b)=>a.step-b.step||a.photo-b.photo||a.y-b.y);
+  return 'let LUBE = '+JSON.stringify(arr,null,2)+';';
+}
+function openExport(){
+  document.getElementById('ex-title').textContent='Export — paste this block into index.html between the LUBE-DATA-START and LUBE-DATA-END markers';
+  document.getElementById('ex-ta').value=lubeJSON();
+  document.getElementById('ex-apply').style.display='none';
+  document.getElementById('exportov').classList.add('on');
+}
+function openImport(){
+  document.getElementById('ex-title').textContent='Import — paste a previously saved LUBE block and press “Apply”';
+  document.getElementById('ex-ta').value='';
+  document.getElementById('ex-apply').style.display='';
+  document.getElementById('exportov').classList.add('on');
+}
+
+function saveDraft(){ if(!EDIT) return; try{ localStorage.setItem('lube3135-draft', JSON.stringify(LUBE)); }catch(e){} }
+
+function renderLegend(){
+  const g=document.getElementById('lp-legend');
+  g.innerHTML='<div class="lgrid">'+Object.keys(OILS).map(k=>{
+    const o=OILS[k];
+    return '<span class="litem"><span class="lp-dot" style="background:'+o.color+'"></span><span><b style="font-family:var(--mono);font-size:12px">'+o.label+'</b> <span style="color:var(--ink3)">— '+o.desc+'</span></span></span>';
+  }).join('')+'</div>';
+}
+
+function setLube(on){
+  lubeOn = on || EDIT;
+  document.body.classList.toggle('lube-on', lubeOn);
+  const b=document.getElementById('lubebtn');
+  b.classList.toggle('on', lubeOn); b.setAttribute('aria-pressed', lubeOn);
+  if(lubeOn) probeLube(STEPS[cur].id);
+  if(curPhoto>=photosOf(STEPS[cur]).length) curPhoto=0;
+  renderSpine(); renderThumbs(); setPhoto(curPhoto); renderLubePanel();
+}
+
+function navStep(dir){
+  const f=document.getElementById('lubefilter');
+  if(lubeOn && f && f.checked){
+    let i=cur+dir;
+    while(i>=0 && i<STEPS.length && stepLube(STEPS[i].id).length===0) i+=dir;
+    if(i>=0 && i<STEPS.length) go(i);
+  } else go(cur+dir);
+}
+
+function initLube(){
+  const lb=document.getElementById('langbtn');
+  if(lb) lb.href = lb.getAttribute('href') + location.search;
+  renderLegend();
+  document.getElementById('lubebtn').onclick=()=>setLube(!lubeOn);
+  document.getElementById('lubefilter').onchange=()=>renderSpine();
+  document.getElementById('ex-close').onclick=()=>document.getElementById('exportov').classList.remove('on');
+  document.getElementById('ex-copy').onclick=()=>{
+    const ta=document.getElementById('ex-ta'); ta.select();
+    try{ navigator.clipboard.writeText(ta.value); }catch(e){ try{ document.execCommand('copy'); }catch(e2){} }
+  };
+  document.getElementById('ex-apply').onclick=()=>{
+    try{
+      let t=document.getElementById('ex-ta').value.trim().replace(/^let\s+LUBE\s*=\s*/,'').replace(/;\s*$/,'');
+      const arr=JSON.parse(t);
+      if(Array.isArray(arr)){ LUBE=arr; selMarker=-1; renderMarkers(); renderLubePanel(); renderSpine(); saveDraft(); document.getElementById('exportov').classList.remove('on'); }
+    }catch(e){ alert('Could not parse JSON: '+e.message); }
+  };
+  if(EDIT){
+    document.body.classList.add('edit');
+    buildEditbar();
+    try{
+      const d=localStorage.getItem('lube3135-draft');
+      if(d){
+        const arr=JSON.parse(d);
+        if(Array.isArray(arr)&&arr.length&&!LUBE.length&&confirm('Found a mapping draft ('+arr.length+' points). Restore it?')) LUBE=arr;
+      }
+    }catch(e){}
+  }
+  setLube(EDIT);
+  renderLubePanel(); renderMarkers();
+}
+
+/* ====== render ====== */
+let cur = 0, curPhoto = 0;
+const $ = s => document.querySelector(s);
+
+function nodeById(id){ return NODES.find(n=>n.id===id); }
+function stepsOf(id){ return STEPS.filter(s=>s.node===id); }
+
+function renderSpine(){
+  const box = $('#nodes'); box.innerHTML='';
+  const activeNode = STEPS[cur].node;
+  const activeIdx = NODES.findIndex(n=>n.id===activeNode);
+  NODES.forEach((nd,i)=>{
+    const cnt = stepsOf(nd.id).length;
+    const b = document.createElement('button');
+    b.className='node'+(cnt===0?' empty':'')+(nd.id===activeNode?' active':(i<activeIdx&&cnt>0?' done':''));
+    b.innerHTML=`<span class="num">${nd.n}</span>
+      <span class="lbl">${nd.title}</span>
+      <span class="cnt">${cnt? cnt+'&nbsp;step'+plural(cnt):'—'}${(lubeOn&&stepsOf(nd.id).some(s=>stepLube(s.id).length))?' · <span style="color:#1565c0">💧'+stepsOf(nd.id).filter(s=>stepLube(s.id).length>0).length+'</span>':''}</span>`;
+    if(cnt>0){ b.onclick=()=>{ const first=STEPS.findIndex(s=>s.node===nd.id); if(first>=0) go(first); }; }
+    box.appendChild(b);
+  });
+}
+function plural(n){ return n===1?'':'s'; }
+
+function renderStep(){
+  const s = STEPS[cur]; const nd = nodeById(s.node);
+  $('#st-node').textContent = `Unit ${nd.n} · ${nd.title}`;
+  $('#st-title').textContent = s.title;
+  curPhoto = 0;
+  selMarker = -1;
+  const ebd=document.getElementById('eb-del'); if(ebd) ebd.disabled=true;
+  const ebf=document.getElementById('eb-flip'); if(ebf) ebf.disabled=true;
+  if(lubeOn) probeLube(s.id);
+  setPhoto(0);
+  renderLubePanel();
+  renderThumbs();
+  // parts
+  const pl=$('#pt-list'); pl.innerHTML='';
+  $('#pt-count').textContent = s.parts.length? s.parts.length+' items':'';
+  if(s.parts.length){
+    s.parts.forEach(p=>{
+      const el=document.createElement('div'); el.className='part';
+      const img=PART_IMG[p.ref];
+      const pic = img
+        ? `<div class="pic" data-full="${img}"><img src="${img}" alt=""></div>`
+        : `<div class="pic none">no<br>photo</div>`;
+      el.innerHTML=`${pic}
+        <div class="body">
+          <span class="ref">${p.ref}</span>${p.qty?`<span class="qty">× ${p.qty}</span>`:''}
+          <span class="en">${p.en||''}</span>
+          ${p.ru?`<span class="ru">${p.ru}</span>`:''}
+        </div>`;
+      const pc=el.querySelector('.pic[data-full]');
+      if(pc) pc.onclick=()=>{ $('#lb-img').src=pc.dataset.full; $('#lb').classList.add('on'); };
+      pl.appendChild(el);
+    });
+  } else {
+    pl.innerHTML='<div class="empty-parts">No separate parts in this step</div>';
+  }
+  const nt=$('#pt-note');
+  if(s.note){ nt.style.display='block'; nt.textContent=s.note; } else nt.style.display='none';
+  // counters + nav
+  $('#hc-cur').textContent = cur+1;
+  $('#hc-tot').textContent = STEPS.length;
+  $('#scount').textContent = `Step ${cur+1} of ${STEPS.length}`;
+  $('#prev').disabled = cur===0;
+  $('#next').disabled = cur===STEPS.length-1;
+  renderSpine();
+}
+function renderThumbs(){
+  const s=STEPS[cur], ph=photosOf(s);
+  const ef=document.getElementById('eb-files');
+  if(ef){
+    const have=(LUBE_PHOTOS[s.id]||[]).length;
+    ef.textContent='Lubrication frames for this step: img/lube/L'+s.id+'A.jpg, L'+s.id+'B.jpg…  ·  found: '+have;
+  }
+  const th=$('#st-thumbs'); th.innerHTML='';
+  if(ph.length>1){
+    ph.forEach((p,i)=>{
+      const t=document.createElement('button');
+      t.className='thumb'+(i===curPhoto?' sel':'')+(i>=s.photos.length?' lth':'');
+      t.innerHTML=`<img src="${p}" alt="">`+(i>=s.photos.length?'<span class="ld">💧</span>':'');
+      t.onclick=()=>setPhoto(i);
+      th.appendChild(t);
+    });
+  }
+}
+function setPhoto(i){
+  const ph=photosOf(STEPS[cur]);
+  if(i>=ph.length) i=0;
+  curPhoto=i;
+  $('#st-main').src = ph[i];
+  document.querySelectorAll('.thumb').forEach((t,k)=>t.classList.toggle('sel',k===i));
+  renderMarkers();
+}
+function go(i){ cur=Math.max(0,Math.min(STEPS.length-1,i)); renderStep(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+$('#prev').onclick=()=>navStep(-1);
+$('#next').onclick=()=>navStep(1);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft')navStep(-1);
+  if(e.key==='ArrowRight')navStep(1);
+  if(e.key==='Escape'){$('#lb').classList.remove('on');document.getElementById('exportov').classList.remove('on');}
+});
+$('#st-main').onclick=()=>{ if(EDIT) return; $('#lb-img').src=$('#st-main').src; $('#lb').classList.add('on'); };
+$('#lb').onclick=()=>$('#lb').classList.remove('on');
+
+renderStep();
+initLube();
+</script>
+</body>
+</html>
