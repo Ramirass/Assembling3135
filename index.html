@@ -155,6 +155,10 @@
   }
 
   /* ---------- lubrication mode ---------- */
+  .langbtn{font-family:var(--mono);font-size:12px;font-weight:600;border:1px solid var(--line);
+    border-radius:100px;padding:5px 11px;background:var(--surface);color:var(--ink2);
+    text-decoration:none;white-space:nowrap}
+  .langbtn:hover{border-color:var(--ink3)}
   .lubebtn{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:100px;
     padding:5px 12px;background:var(--surface);cursor:pointer;color:var(--ink2);white-space:nowrap}
   .lubebtn.on{background:var(--ruby);border-color:var(--ruby);color:#fff}
@@ -236,6 +240,7 @@
     </div>
     <div class="hcount">Шаг <b id="hc-cur">1</b> / <span id="hc-tot">1</span></div>
     <button class="lubebtn" id="lubebtn" aria-pressed="false">💧 Смазка</button>
+    <a class="langbtn" id="langbtn" href="en.html">EN</a>
   </div>
 </header>
 
@@ -811,7 +816,7 @@ const OILS = {
   '9415':  {label:'Moebius 9415',   color:'#2e7d32', desc:'смазка импульсных поверхностей палет и зубьев анкерного колеса (28800 пк/ч)'},
   'KT22':  {label:'KT22',           color:'#ef8f00', desc:'фрикционные пары: ремонтуар, переводной механизм'},
   'FIX':   {label:'Fixodrop',       color:'#00838f', desc:'эпилам (реф. 3109): палеты, анкерное и реверсивные колёса, секундное колесо'},
-  'BRAKE': {label:'Klüber 125',color:'#5d4037', desc:'стенка барабана'},
+  'BRAKE': {label:'Klüber 125',color:'#5d4037', desc:'тормозная смазка: стенка барабана, поверхность скольжения накладки пружины'},
   'none':  {label:'Не смазывать',   color:'#616161', desc:'точка сознательно без смазки (no friction)'},
 };
 const QTYS = ['1 капля','½ капли','экономно','по min/max'];
@@ -1054,7 +1059,7 @@ let LUBE = [
     "x": 65,
     "y": 45.3,
     "oil": "KT22",
-    "qty": "3 точки",
+    "qty": "1 капля",
     "note": ""
   },
   {
@@ -1705,6 +1710,8 @@ function navStep(dir){
 }
 
 function initLube(){
+  const lb=document.getElementById('langbtn');
+  if(lb) lb.href = lb.getAttribute('href') + location.search;
   renderLegend();
   document.getElementById('lubebtn').onclick=()=>setLube(!lubeOn);
   document.getElementById('lubefilter').onchange=()=>renderSpine();
